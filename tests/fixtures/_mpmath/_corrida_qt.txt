@@ -1,0 +1,7 @@
+funcion qt
+filas 1560
+procesos 6
+chunksize 2
+segundos 6.9
+fecha 2026-10-13 15:54:11
+filas_con_causa 0

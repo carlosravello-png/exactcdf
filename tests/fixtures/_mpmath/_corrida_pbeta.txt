@@ -1,0 +1,7 @@
+funcion pbeta
+filas 8266
+procesos 6
+chunksize 2
+segundos 486.8
+fecha 2026-10-13 15:54:00
+filas_con_causa 0

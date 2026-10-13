@@ -1,0 +1,7 @@
+funcion qgamma
+filas 1544
+procesos 6
+chunksize 2
+segundos 21.9
+fecha 2026-10-13 15:45:38
+filas_con_causa 0

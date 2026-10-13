@@ -1,0 +1,7 @@
+funcion pnorm
+filas 4870
+procesos 6
+chunksize 2
+segundos 3.0
+fecha 2026-10-13 15:45:04
+filas_con_causa 0

@@ -1,0 +1,7 @@
+funcion pt
+filas 500
+procesos 6
+chunksize 2
+segundos 4.4
+fecha 2026-10-13 15:54:04
+filas_con_causa 0

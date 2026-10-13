@@ -1,0 +1,25 @@
+# descartados de todos los generadores (no entran a los fixtures; el auditor los revisa)
+# sha256_gen_puntos.py: 65e4263b41ae71f15897bf5311481cf4bffde93fb1c5c3e03bbabf4dc61db9eb
+# total: 21
+funcion,argumentos,lower_tail,origen,frontera,causa
+erfc,x=30.000000000000004,,frontera,x=k/16,fuera del dominio o de las cotas de muestreo
+pnorm,z=-40.000000000000007,1,frontera,z=k/16,fuera del dominio o de las cotas de muestreo
+pnorm,z=40.000000000000007,0,frontera,z=k/16,fuera del dominio o de las cotas de muestreo
+qnorm,p=0.50000000000000011,1,frontera,p=0.5,fuera del dominio o de las cotas de muestreo
+qnorm,p=0.50000000000000011,0,frontera,p=0.5,fuera del dominio o de las cotas de muestreo
+qgamma,p=nan;a=1.5,1,frontera,DM86 z=0.7(a+1),frontera no localizada (sin cambio de signo en la biseccion o fuera de rango)
+qgamma,p=nan;a=3,1,frontera,DM86 z=0.7(a+1),frontera no localizada (sin cambio de signo en la biseccion o fuera de rango)
+qchisq,p=nan;nu=3,1,frontera,DM86 z=0.7(a+1),frontera no localizada (sin cambio de signo en la biseccion o fuera de rango)
+qchisq,p=nan;nu=6,1,frontera,DM86 z=0.7(a+1),frontera no localizada (sin cambio de signo en la biseccion o fuera de rango)
+pbeta,a=100000;b=5000;x=1.0460476190476191,1,frontera,y=1.03q,fuera del dominio o de las cotas de muestreo
+pbeta,a=100000;b=5000;x=1.0460476190476191,0,frontera,y=1.03q,fuera del dominio o de las cotas de muestreo
+pbeta,a=1000;b=90;x=1.0064495412844039,1,cruce,b=100 x y=1.03q,fuera del dominio o de las cotas de muestreo
+pbeta,a=1000;b=90;x=1.0064495412844039,0,cruce,b=100 x y=1.03q,fuera del dominio o de las cotas de muestreo
+gamma1pm1,a=-0.50000049999999996,,frontera,a=-0.5,fuera del dominio o de las cotas de muestreo
+gamma1pm1,a=-0.50049999999999994,,frontera,a=-0.5,fuera del dominio o de las cotas de muestreo
+gamma1pm1,a=-0.55000000000000004,,frontera,a=-0.5,fuera del dominio o de las cotas de muestreo
+gamma1pm1,a=-0.50000000000000011,,frontera,a=-0.5,fuera del dominio o de las cotas de muestreo
+gamma1pm1,a=1.5000014999999998,,frontera,a=1.5,fuera del dominio o de las cotas de muestreo
+gamma1pm1,a=1.5014999999999998,,frontera,a=1.5,fuera del dominio o de las cotas de muestreo
+gamma1pm1,a=1.6500000000000001,,frontera,a=1.5,fuera del dominio o de las cotas de muestreo
+gamma1pm1,a=1.5000000000000002,,frontera,a=1.5,fuera del dominio o de las cotas de muestreo

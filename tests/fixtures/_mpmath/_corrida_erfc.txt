@@ -1,0 +1,7 @@
+funcion erfc
+filas 3448
+procesos 6
+chunksize 2
+segundos 130.1
+fecha 2026-10-13 15:45:01
+filas_con_causa 0

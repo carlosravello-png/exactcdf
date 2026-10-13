@@ -1,0 +1,90 @@
+
+== erf
+   erf_r1                 n=  533  cifras min  30 p1  30  | ulps R: mediana - p99 - max -  | con causa 0
+   erf_r2                 n=  534  cifras min  30 p1  30  | ulps R: mediana - p99 - max -  | con causa 0
+   erf_r3                 n=  508  cifras min  30 p1  30  | ulps R: mediana - p99 - max -  | con causa 0
+
+== erfc
+   erfc_neg               n=  504  cifras min  30 p1  30  | ulps R: mediana - p99 - max -  | con causa 0
+   erfc_r1                n=  511  cifras min  30 p1  30  | ulps R: mediana - p99 - max -  | con causa 0
+   erfc_r2                n=  682  cifras min  30 p1  30  | ulps R: mediana - p99 - max -  | con causa 0
+   erfc_r3                n= 1751  cifras min  30 p1  30  | ulps R: mediana - p99 - max -  | con causa 0
+
+== pnorm
+   pnorm_cola             n= 3814  cifras min  30 p1  30  | ulps R: mediana 0 p99 3 max 4  | con causa 0
+   pnorm_r1               n=  520  cifras min  30 p1  30  | ulps R: mediana 0 p99 1 max 1  | con causa 0
+   pnorm_r2               n=  536  cifras min  30 p1  30  | ulps R: mediana 0 p99 3 max 4  | con causa 0
+
+== qnorm
+   qnorm_centro           n=  516  cifras min  30 p1  30  | ulps R: mediana 1 p99 39 max 4369632464003802886  | con causa 0
+   qnorm_colas            n=  508  cifras min  30 p1  30  | ulps R: mediana 1 p99 3 max 4  | con causa 0
+   qnorm_wichura          n=    3  cifras min  30 p1  30  | ulps R: mediana 1 p99 1 max 1  | con causa 0
+
+== pgamma
+   pgamma_a05             n=  528  cifras min  30 p1  30  | ulps R: mediana 0 p99 24 max 300  | con causa 0
+   pgamma_asin16          n=  626  cifras min  30 p1  30  | ulps R: mediana 0 p99 46 max 367  | con causa 0
+   pgamma_cf11_med        n=  814  cifras min  30 p1  30  | ulps R: mediana 1 p99 16 max 18  | con causa 0
+   pgamma_cf11_peq        n=  608  cifras min  30 p1  30  | ulps R: mediana 0 p99 47 max 888  | con causa 0
+   pgamma_lejos           n=  776  cifras min  30 p1  30  | ulps R: mediana 0 p99 393 max 4173  | con causa 0
+   pgamma_n19             n=  578  cifras min  30 p1  30  | ulps R: mediana 0 p99 99 max 217  | con causa 0
+   pgamma_q10             n=  626  cifras min  30 p1  30  | ulps R: mediana 1 p99 45 max 64  | con causa 0
+   pgamma_s15             n=  794  cifras min  30 p1  30  | ulps R: mediana 1 p99 86 max 322  | con causa 0
+   pgamma_serie9          n=  754  cifras min  30 p1  30  | ulps R: mediana 1 p99 31 max 80  | con causa 0
+   pgamma_suma14          n=  818  cifras min  30 p1  30  | ulps R: mediana 0 p99 10 max 13  | con causa 0
+   pgamma_temme           n=  980  cifras min  30 p1  30  | ulps R: mediana 1 p99 746 max 6150  | con causa 0
+
+== qgamma
+   qgamma_as91            n=  351  cifras min  30 p1  30  | ulps R: mediana 1 p99 57 max 114  | con causa 0
+   qgamma_dm86            n=  693  cifras min  30 p1  30  | ulps R: mediana 1 p99 26 max 43  | con causa 0
+   qgamma_todas           n=  500  cifras min  30 p1  30  | ulps R: mediana 0 p99 170 max 371  | con causa 0
+
+== pchisq
+   pgamma_a05             n=   51  cifras min  30 p1  30  | ulps R: mediana 0 p99 495 max 495  | con causa 0
+   pgamma_asin16          n=  102  cifras min  30 p1  30  | ulps R: mediana 0 p99 43 max 44  | con causa 0
+   pgamma_cf11_med        n=  308  cifras min  30 p1  30  | ulps R: mediana 1 p99 16 max 17  | con causa 0
+   pgamma_cf11_peq        n=  104  cifras min  30 p1  30  | ulps R: mediana 1 p99 47 max 88  | con causa 0
+   pgamma_lejos           n=  191  cifras min  30 p1  30  | ulps R: mediana 0 p99 2428 max 4173  | con causa 0
+   pgamma_n19             n=   93  cifras min  30 p1  30  | ulps R: mediana 1 p99 37 max 37  | con causa 0
+   pgamma_q10             n=  130  cifras min  30 p1  30  | ulps R: mediana 1 p99 63 max 64  | con causa 0
+   pgamma_s15             n=  251  cifras min  30 p1  30  | ulps R: mediana 1 p99 15 max 29  | con causa 0
+   pgamma_serie9          n=  208  cifras min  30 p1  30  | ulps R: mediana 1 p99 35 max 69  | con causa 0
+   pgamma_suma14          n=  319  cifras min  30 p1  30  | ulps R: mediana 0 p99 8 max 14  | con causa 0
+   pgamma_temme           n=  413  cifras min  30 p1  30  | ulps R: mediana 1 p99 284 max 6150  | con causa 0
+
+== qchisq
+   qgamma_as91            n=  351  cifras min  30 p1  30  | ulps R: mediana 1 p99 57 max 114  | con causa 0
+   qgamma_dm86            n=  693  cifras min  30 p1  30  | ulps R: mediana 1 p99 26 max 43  | con causa 0
+   qgamma_todas           n=  200  cifras min  30 p1  30  | ulps R: mediana 0 p99 225 max 233  | con causa 0
+
+== pbeta
+   pbeta_basym_agtb       n=  594  cifras min  30 p1  30  | ulps R: mediana 6 p99 1544 max 2459  | con causa 0
+   pbeta_basym_aleb       n=  610  cifras min  30 p1  30  | ulps R: mediana 6 p99 1887 max 4002  | con causa 0
+   pbeta_bfrac20          n= 1178  cifras min  30 p1  30  | ulps R: mediana 3 p99 1932 max 3839  | con causa 0
+   pbeta_bgrat14          n=  730  cifras min  30 p1  30  | ulps R: mediana 0 p99 227 max 1081  | con causa 0
+   pbeta_bpser12          n= 1182  cifras min  30 p1  30  | ulps R: mediana 1 p99 55 max 240  | con causa 0
+   pbeta_bpser13          n=  668  cifras min  30 p1  30  | ulps R: mediana 0 p99 84 max 208  | con causa 0
+   pbeta_bpser16          n=  602  cifras min  30 p1  30  | ulps R: mediana 0 p99 155 max 459  | con causa 0
+   pbeta_bup2bgrat19      n=  576  cifras min  30 p1  30  | ulps R: mediana 1 p99 11 max 16  | con causa 0
+   pbeta_bupbgrat15       n=  736  cifras min  30 p1  30  | ulps R: mediana 1 p99 12 max 19  | con causa 0
+   pbeta_bupbgrat18       n=  666  cifras min  30 p1  30  | ulps R: mediana 0 p99 583 max 565045033200669455  | con causa 0
+   pbeta_bupbpser17       n=  724  cifras min  30 p1  30  | ulps R: mediana 0 p99 235 max 1433  | con causa 0
+
+== pt
+   pt_todas               n=  500  cifras min  30 p1  30  | ulps R: mediana 0 p99 100 max 471  | con causa 0
+
+== qt
+   qt_cerradas            n=  520  cifras min  30 p1  30  | ulps R: mediana 0 p99 14 max 147  | con causa 0
+   qt_ngt2                n=  510  cifras min  30 p1  30  | ulps R: mediana 1 p99 48 max 28757134904  | con causa 0
+   qt_resto               n=  530  cifras min  30 p1  30  | ulps R: mediana 34 p99 3299193078515283666 max 4372830836112046336  | con causa 0
+
+== lgamma
+   lgamma_d               n=  516  cifras min  30 p1  30  | ulps R: mediana 3 p99 616 max 4371604244418040785  | con causa 0
+   lgamma_delta           n=  505  cifras min  30 p1  30  | ulps R: mediana 1 p99 2 max 3  | con causa 0
+   lgamma_red             n=  521  cifras min  30 p1  30  | ulps R: mediana 0 p99 4 max 8  | con causa 0
+
+== gamma
+   gamma_d                n=  510  cifras min  30 p1  30  | ulps R: mediana 0 p99 1 max 1  | con causa 0
+   gamma_fuera            n=  508  cifras min  30 p1  30  | ulps R: mediana 0 p99 897 max 1042  | con causa 0
+
+== gamma1pm1
+   gamma1pm1_c            n=  516  cifras min  30 p1  30  | ulps R: mediana - p99 - max -  | con causa 0

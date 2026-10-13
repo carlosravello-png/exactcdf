@@ -1,0 +1,7 @@
+funcion erf
+filas 1575
+procesos 6
+chunksize 2
+segundos 2.1
+fecha 2026-10-13 15:42:51
+filas_con_causa 0

@@ -1,0 +1,7 @@
+funcion qnorm
+filas 1027
+procesos 6
+chunksize 2
+segundos 2.8
+fecha 2026-10-13 15:45:07
+filas_con_causa 0

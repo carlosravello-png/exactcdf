@@ -1,0 +1,7 @@
+funcion pgamma
+filas 7902
+procesos 6
+chunksize 2
+segundos 8.2
+fecha 2026-10-13 15:45:16
+filas_con_causa 0
