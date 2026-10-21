@@ -1,0 +1,239 @@
+{
+  "fuente": "expediente/herramientas/stats-js_tolerancias.md: reglas 3, 4, 5, 6 y 9; propuesta v2 firmada el 19/10/2026 (medida unica, P1, P2, P3); D1 firmada el 20/10/2026; D4 v2 (firmada por Carlos el 21/10/2026)",
+  "medida": {
+    "definicion": "ulps(x, ref) = |x - ref| / ulp(ref)",
+    "ref": "el double mas cercano a ref_mp70",
+    "ulp": "para 2^e <= |ref| < 2^(e+1), ulp = 2^(e-52); en la zona subnormal y en 0, 2^-1074",
+    "relativa_a_ulps": "tol_ulps = tol_rel * |ref| / ulp(ref), fila por fila"
+  },
+  "precedencia": "1) tipo o dominio en la entrada publica: StatsError (D4 v2); 2) lo decide la referencia de mpmath, no la salida: fuera_de_rango 'subnormal' o 'cero' -> P2, 'inf' -> P3; 3) si no, rige la entrada de la etiqueta en tolerancias.json",
+  "P1": {
+    "aplica_a": "entradas con tipo 'P1' (inversas)",
+    "regla": "ulps(x, ref) <= max( tol_F * F_cola / (f(x_ref) * ulp(x_ref)) , 4 )",
+    "F_cola": "min(p, 1 - p) en la cola usada",
+    "f": "densidad en x_ref",
+    "suelo_ulps": 4,
+    "tol_F": "tolerancia de la region de la CDF en (x_ref, parametros); si esa region esta en ulps: tol_F = tol_ulps * ulp(F) / F"
+  },
+  "P2": {
+    "subnormal": "|x - double de la referencia| <= 2 ulps de subnormal (2 * 2^-1074)",
+    "cero": "0 exacto",
+    "fallo": "devolver 0 donde la referencia es un double normal"
+  },
+  "P3": "inf: +-Infinity exacto, con el signo de la referencia",
+  "relativa_con_suelo_absoluto": "|x - ref| <= max(relativa * |ref|, absoluta)",
+  "informa_fallo": "no tiene numero: se prueba que lance StatsError con motivo indeterminado (D4 v2)",
+  "lanza": "se prueba que lance StatsError con el motivo indicado; no hay valor que medir",
+  "fallo_informado": {
+    "estado": "D4 v2, FIRMADA por Carlos el 21/10/2026",
+    "mecanismo": "lanzar; nunca devolver NaN",
+    "clase": "class StatsError extends RangeError (cubre tambien el tipo equivocado: convencion declarada)",
+    "campos": {
+      "name": "'StatsError', fijado en el constructor",
+      "funcion": "la funcion publica que llamo el usuario, nunca una interna",
+      "motivo": "uno de los cuatro motivos; constantes de la API, no se traducen",
+      "argumento": "nombre del argumento en la firma publica",
+      "valor": "el valor original, como number cuando lo es (distingue -0 y NaN)",
+      "dominio": "{min, max, incluye_min, incluye_max}",
+      "region": "etiqueta de la tabla de tolerancias, para indeterminado y pendiente"
+    },
+    "message": "en ingles, armado desde los campos; la interfaz ES/EN arma su texto desde los campos, nunca desde message",
+    "motivos": {
+      "dominio": "argumento fuera del dominio declarado, incluidos NaN y +-Infinity",
+      "tipo": "argumento que no es number, o lowerTail presente que no es booleano",
+      "indeterminado": "no puede resolverse en doubles donde el expediente lo preve (pgamma_indet)",
+      "pendiente": "region sin metodo firmado (gamma con 40 < a < a*)"
+    },
+    "no_es_fallo": "+-Infinity bajo P3, 0 exacto y subnormales bajo P2 son resultados"
+  },
+  "validacion": {
+    "donde": "solo en la entrada publica; los nucleos internos no lanzan dominio",
+    "orden": "el de la firma publica; se informa el primer argumento que falla",
+    "forma": "comprobaciones positivas, p. ej. !(a > 0), que rechazan NaN y -0 donde corresponde",
+    "criterio": "todo argumento es un double finito dentro del intervalo declarado; -0 pertenece si y solo si 0 pertenece; los limites no se devuelven",
+    "nan_interno": "un NaN fabricado dentro con argumentos validos es un defecto de stats.js, no un StatsError: el arnes lo cuenta como fallo"
+  },
+  "arnes_fallos": "una prueba de fallo exige e.name === 'StatsError' y e.motivo y e.argumento iguales a los esperados; no basta con que lance",
+  "constantes": {
+    "gamma_a_desborde": {
+      "valor": 171.62437695630274,
+      "hex": "0x1.573fae561f648p+7",
+      "definicion": "menor double con Gamma(a) >= 2^1024 - 2^970",
+      "procedencia": "mpmath 1.3.0, dps 80; Opus (s2_umbral_gamma.py) y Cowork, 21/10/2026"
+    },
+    "gamma_a_low": {
+      "valor": 5.562684646268003e-309,
+      "hex": "0x0.4000000000000p-1022",
+      "definicion": "mayor double con Gamma(a) >= 2^1024 - 2^970 (= 2^-1024)",
+      "procedencia": "mpmath 1.3.0, dps 80; Opus y Cowork, 21/10/2026"
+    },
+    "parametro_min": {
+      "valor": 1e-323,
+      "hex": "0x0.0000000000002p-1022",
+      "definicion": "2^-1073: menor nu (pchisq, qchisq) y n (pt, qt) con nu/2 > 0"
+    }
+  },
+  "dominios": {
+    "_criterio": "double finito dentro del intervalo; max null = sin cota superior (finito); NaN, +-Infinity o un tipo que no sea number nunca pertenecen",
+    "erf": {
+      "x": {
+        "min": null,
+        "max": null,
+        "incluye_min": false,
+        "incluye_max": false
+      }
+    },
+    "erfc": {
+      "x": {
+        "min": null,
+        "max": null,
+        "incluye_min": false,
+        "incluye_max": false
+      }
+    },
+    "pnorm": {
+      "z": {
+        "min": null,
+        "max": null,
+        "incluye_min": false,
+        "incluye_max": false
+      }
+    },
+    "qnorm": {
+      "p": {
+        "min": 0,
+        "max": 1,
+        "incluye_min": false,
+        "incluye_max": false
+      }
+    },
+    "pgamma": {
+      "a": {
+        "min": 0,
+        "max": null,
+        "incluye_min": false,
+        "incluye_max": false
+      },
+      "x": {
+        "min": 0,
+        "max": null,
+        "incluye_min": true,
+        "incluye_max": false
+      }
+    },
+    "pchisq": {
+      "nu": {
+        "min": 1e-323,
+        "max": null,
+        "incluye_min": true,
+        "incluye_max": false
+      },
+      "x": {
+        "min": 0,
+        "max": null,
+        "incluye_min": true,
+        "incluye_max": false
+      }
+    },
+    "qgamma": {
+      "a": {
+        "min": 0,
+        "max": null,
+        "incluye_min": false,
+        "incluye_max": false
+      },
+      "p": {
+        "min": 0,
+        "max": 1,
+        "incluye_min": false,
+        "incluye_max": false
+      }
+    },
+    "qchisq": {
+      "nu": {
+        "min": 1e-323,
+        "max": null,
+        "incluye_min": true,
+        "incluye_max": false
+      },
+      "p": {
+        "min": 0,
+        "max": 1,
+        "incluye_min": false,
+        "incluye_max": false
+      }
+    },
+    "pbeta": {
+      "a": {
+        "min": 0,
+        "max": null,
+        "incluye_min": false,
+        "incluye_max": false
+      },
+      "b": {
+        "min": 0,
+        "max": null,
+        "incluye_min": false,
+        "incluye_max": false
+      },
+      "x": {
+        "min": 0,
+        "max": 1,
+        "incluye_min": true,
+        "incluye_max": true
+      }
+    },
+    "pt": {
+      "n": {
+        "min": 1e-323,
+        "max": null,
+        "incluye_min": true,
+        "incluye_max": false
+      },
+      "t": {
+        "min": null,
+        "max": null,
+        "incluye_min": false,
+        "incluye_max": false
+      }
+    },
+    "qt": {
+      "n": {
+        "min": 1e-323,
+        "max": null,
+        "incluye_min": true,
+        "incluye_max": false
+      },
+      "p": {
+        "min": 0,
+        "max": 1,
+        "incluye_min": false,
+        "incluye_max": false
+      }
+    },
+    "lgamma": {
+      "a": {
+        "min": 0,
+        "max": null,
+        "incluye_min": false,
+        "incluye_max": false
+      }
+    },
+    "gamma": {
+      "a": {
+        "min": 0,
+        "max": null,
+        "incluye_min": false,
+        "incluye_max": false
+      }
+    },
+    "_lowerTail": "en todas las que lo tengan: true o false; omitido (o undefined) vale true (D4 v2; la decision 6 no fija el valor por omision); presente y no booleano: StatsError con motivo tipo"
+  },
+  "internas": {
+    "gamma1pm1": "precondicion del desarrollador: -0.5 <= a <= 1.5 (expediente, tabla de DiDonato y Morris, H(a)); fuera de ese rango es un defecto de quien la llama, no un StatsError"
+  },
+  "familias": {
+    "pchisq": "usa las etiquetas de pgamma",
+    "qchisq": "usa las etiquetas de qgamma"
+  }
+}

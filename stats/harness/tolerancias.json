@@ -1,0 +1,415 @@
+{
+  "erf_r1": {
+    "funcion": "erf",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-15,
+    "origen": "techo de la fuente"
+  },
+  "erf_r2": {
+    "funcion": "erf",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-15,
+    "origen": "techo de la fuente"
+  },
+  "erf_r3": {
+    "funcion": "erf",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-15,
+    "origen": "techo de la fuente"
+  },
+  "erfc_neg": {
+    "funcion": "erfc",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-15,
+    "origen": "techo de la fuente"
+  },
+  "erfc_r1": {
+    "funcion": "erfc",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-15,
+    "origen": "techo de la fuente"
+  },
+  "erfc_r2": {
+    "funcion": "erfc",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-15,
+    "origen": "techo de la fuente"
+  },
+  "erfc_r3": {
+    "funcion": "erfc",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-15,
+    "origen": "techo de la fuente"
+  },
+  "erfc_sub": {
+    "funcion": "erfc",
+    "clase": "regla",
+    "tipo": "P2"
+  },
+  "pnorm_r1": {
+    "funcion": "pnorm",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-15,
+    "origen": "techo de la fuente"
+  },
+  "pnorm_r2": {
+    "funcion": "pnorm",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-15,
+    "origen": "techo de la fuente"
+  },
+  "pnorm_cola": {
+    "funcion": "pnorm",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-15,
+    "origen": "techo de la fuente",
+    "condicion": "exponencial calculada desde z (diseno firmado); si se usa z/sqrt(2), el techo es ~2x^2*eps y se reporta"
+  },
+  "pnorm_sub": {
+    "funcion": "pnorm",
+    "clase": "regla",
+    "tipo": "P2"
+  },
+  "qnorm_centro": {
+    "funcion": "qnorm",
+    "clase": "particion",
+    "tipo": "P1",
+    "cdf": "pnorm",
+    "tol_F": "region_de_la_cdf",
+    "tol_F_tabla": 1e-15
+  },
+  "qnorm_colas": {
+    "funcion": "qnorm",
+    "clase": "particion",
+    "tipo": "P1",
+    "cdf": "pnorm",
+    "tol_F": "region_de_la_cdf",
+    "tol_F_tabla": 1e-15
+  },
+  "qnorm_wichura": {
+    "funcion": "qnorm",
+    "clase": "superpuesta",
+    "tipo": "P1",
+    "cdf": "pnorm",
+    "tol_F": "region_de_la_cdf",
+    "tol_F_tabla": 1e-15
+  },
+  "pgamma_a05": {
+    "funcion": "pgamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pgamma_serie9": {
+    "funcion": "pgamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pgamma_q10": {
+    "funcion": "pgamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pgamma_cf11_peq": {
+    "funcion": "pgamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pgamma_suma14": {
+    "funcion": "pgamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pgamma_s15": {
+    "funcion": "pgamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pgamma_cf11_med": {
+    "funcion": "pgamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pgamma_asin16": {
+    "funcion": "pgamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pgamma_n19": {
+    "funcion": "pgamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pgamma_temme": {
+    "funcion": "pgamma",
+    "clase": "particion",
+    "tipo": "ulps",
+    "valor": 1232,
+    "origen": "2 x p99 de R; provisional desde R; entrega A FIJAR"
+  },
+  "pgamma_lejos": {
+    "funcion": "pgamma",
+    "clase": "particion",
+    "tipo": "ulps",
+    "valor": 788,
+    "origen": "2 x p99 de R; provisional desde R; entrega A FIJAR"
+  },
+  "pgamma_indet": {
+    "funcion": "pgamma",
+    "clase": "vacia",
+    "tipo": "informa_fallo"
+  },
+  "pgamma_sub": {
+    "funcion": "pgamma",
+    "clase": "regla",
+    "tipo": "P2"
+  },
+  "qgamma_todas": {
+    "funcion": "qgamma",
+    "clase": "particion",
+    "tipo": "P1",
+    "cdf": "pgamma",
+    "tol_F": "region_de_la_cdf",
+    "tol_F_tabla": 1e-13
+  },
+  "qgamma_as91": {
+    "funcion": "qgamma",
+    "clase": "superpuesta",
+    "tipo": "P1",
+    "cdf": "pgamma",
+    "tol_F": "region_de_la_cdf",
+    "tol_F_tabla": 1e-13
+  },
+  "qgamma_dm86": {
+    "funcion": "qgamma",
+    "clase": "superpuesta",
+    "tipo": "P1",
+    "cdf": "pgamma",
+    "tol_F": "region_de_la_cdf",
+    "tol_F_tabla": 1e-13
+  },
+  "pbeta_bpser12": {
+    "funcion": "pbeta",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pbeta_bpser13": {
+    "funcion": "pbeta",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pbeta_bgrat14": {
+    "funcion": "pbeta",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pbeta_bupbgrat15": {
+    "funcion": "pbeta",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pbeta_bpser16": {
+    "funcion": "pbeta",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pbeta_bupbpser17": {
+    "funcion": "pbeta",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pbeta_bupbgrat18": {
+    "funcion": "pbeta",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pbeta_bup2bgrat19": {
+    "funcion": "pbeta",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente"
+  },
+  "pbeta_bfrac20": {
+    "funcion": "pbeta",
+    "clase": "particion",
+    "tipo": "ulps",
+    "valor": 3864,
+    "origen": "2 x p99 de R; provisional desde R; entrega A FIJAR"
+  },
+  "pbeta_basym_aleb": {
+    "funcion": "pbeta",
+    "clase": "particion",
+    "tipo": "ulps",
+    "valor": 3774,
+    "origen": "2 x p99 de R; provisional desde R; entrega A FIJAR"
+  },
+  "pbeta_basym_agtb": {
+    "funcion": "pbeta",
+    "clase": "particion",
+    "tipo": "ulps",
+    "valor": 3088,
+    "origen": "2 x p99 de R; provisional desde R; entrega A FIJAR"
+  },
+  "pbeta_sub": {
+    "funcion": "pbeta",
+    "clase": "regla",
+    "tipo": "P2"
+  },
+  "pt_todas": {
+    "funcion": "pt",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-13,
+    "origen": "techo de la fuente",
+    "hereda": "region de pbeta que invoca su (a, b, x); la etiqueta la pone el arnes",
+    "pendiente": "forma de la transformacion de pt por zona (decision F de Carlos)"
+  },
+  "qt_cerradas": {
+    "funcion": "qt",
+    "clase": "particion",
+    "tipo": "ulps",
+    "valor": 28,
+    "origen": "2 x p99 de R; provisional desde R; entrega A FIJAR"
+  },
+  "qt_ngt2": {
+    "funcion": "qt",
+    "clase": "particion",
+    "tipo": "P1",
+    "cdf": "pt",
+    "tol_F": "region_de_la_cdf",
+    "tol_F_tabla": 1e-13,
+    "pendiente": "la region de la cdf depende de la forma de pt (decision F)"
+  },
+  "qt_resto": {
+    "funcion": "qt",
+    "clase": "particion",
+    "tipo": "P1",
+    "cdf": "pt",
+    "tol_F": "region_de_la_cdf",
+    "tol_F_tabla": 1e-13,
+    "pendiente": "la region de la cdf depende de la forma de pt (decision F)"
+  },
+  "lgamma_d": {
+    "funcion": "lgamma",
+    "clase": "particion",
+    "tipo": "relativa_con_suelo_absoluto",
+    "relativa": 1e-14,
+    "absoluta": 2.9e-16,
+    "origen": "relativa: techo de la fuente; suelo absoluto: 2 x p99 del error absoluto de R; entrega A FIJAR",
+    "regla": "|x - ref| <= max(relativa*|ref|, absoluta)"
+  },
+  "lgamma_red": {
+    "funcion": "lgamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-14,
+    "origen": "techo de la fuente"
+  },
+  "lgamma_delta": {
+    "funcion": "lgamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-14,
+    "origen": "techo de la fuente"
+  },
+  "gamma_d": {
+    "funcion": "gamma",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 1e-14,
+    "origen": "techo de la fuente"
+  },
+  "gamma_fuera": {
+    "funcion": "gamma",
+    "clase": "pendiente",
+    "tipo": "tramos_por_a",
+    "origen": "por tramo: D1 firmada el 20/10/2026 (tramos 1 y 2) + D4 v2 firmada el 21/10/2026 (tramo 3)",
+    "tramos": [
+      {
+        "a": "(0, 0.8)",
+        "a_min": 0,
+        "incluye_min": false,
+        "a_max": 0.8,
+        "incluye_max": false,
+        "metodo": "Gamma(a+1)/a",
+        "tipo": "relativa",
+        "valor": 1e-14,
+        "origen": "D1"
+      },
+      {
+        "a": "(2.25, 40]",
+        "a_min": 2.25,
+        "incluye_min": false,
+        "a_max": 40,
+        "incluye_max": true,
+        "metodo": "recurrencia hacia (1.25, 2.25], n <= 38; primero Gamma(nucleo), luego los factores",
+        "tipo": "relativa",
+        "valor": 1e-14,
+        "origen": "D1"
+      },
+      {
+        "a": "(40, a*)",
+        "a_min": 40,
+        "incluye_min": false,
+        "a_max": 171.62437695630274,
+        "a_max_hex": "0x1.573fae561f648p+7",
+        "incluye_max": false,
+        "metodo": "PENDIENTE",
+        "tipo": "lanza",
+        "motivo": "pendiente",
+        "origen": "D4 v2 (firmada el 21/10/2026)",
+        "nota": "a >= a* (constante de reglas.json): la referencia desborda y rige P3 por precedencia"
+      }
+    ],
+    "condicion": "el presupuesto supone gamma_d real en pocos ulps; si el nucleo gasta todo 1e-14, se reporta y no se relaja"
+  },
+  "gamma1pm1_c": {
+    "funcion": "gamma1pm1",
+    "clase": "particion",
+    "tipo": "relativa",
+    "valor": 2e-14,
+    "origen": "techo de la fuente"
+  }
+}
