@@ -75,6 +75,7 @@
   },
   "dominios": {
     "_criterio": "double finito dentro del intervalo; max null = sin cota superior (finito); NaN, +-Infinity o un tipo que no sea number nunca pertenecen",
+    "_orden": "las claves de cada funcion reflejan el orden de su firma publica, que fija el expediente (paquete 4, apartado 4.3): primero la variable, despues los parametros, y al final lowerTail cuando existe; la fuente de la firma es el expediente, no este archivo",
     "erf": {
       "x": {
         "min": null,
@@ -108,62 +109,68 @@
       }
     },
     "pgamma": {
+      "x": {
+        "min": 0,
+        "max": null,
+        "incluye_min": true,
+        "incluye_max": false
+      },
       "a": {
         "min": 0,
         "max": null,
         "incluye_min": false,
         "incluye_max": false
-      },
-      "x": {
-        "min": 0,
-        "max": null,
-        "incluye_min": true,
-        "incluye_max": false
       }
     },
     "pchisq": {
-      "nu": {
-        "min": 1e-323,
+      "x": {
+        "min": 0,
         "max": null,
         "incluye_min": true,
         "incluye_max": false
       },
-      "x": {
-        "min": 0,
+      "nu": {
+        "min": 1e-323,
         "max": null,
         "incluye_min": true,
         "incluye_max": false
       }
     },
     "qgamma": {
+      "p": {
+        "min": 0,
+        "max": 1,
+        "incluye_min": false,
+        "incluye_max": false
+      },
       "a": {
         "min": 0,
         "max": null,
         "incluye_min": false,
         "incluye_max": false
-      },
+      }
+    },
+    "qchisq": {
       "p": {
         "min": 0,
         "max": 1,
         "incluye_min": false,
         "incluye_max": false
-      }
-    },
-    "qchisq": {
+      },
       "nu": {
         "min": 1e-323,
         "max": null,
         "incluye_min": true,
         "incluye_max": false
-      },
-      "p": {
-        "min": 0,
-        "max": 1,
-        "incluye_min": false,
-        "incluye_max": false
       }
     },
     "pbeta": {
+      "x": {
+        "min": 0,
+        "max": 1,
+        "incluye_min": true,
+        "incluye_max": true
+      },
       "a": {
         "min": 0,
         "max": null,
@@ -175,39 +182,33 @@
         "max": null,
         "incluye_min": false,
         "incluye_max": false
-      },
-      "x": {
-        "min": 0,
-        "max": 1,
-        "incluye_min": true,
-        "incluye_max": true
       }
     },
     "pt": {
-      "n": {
-        "min": 1e-323,
-        "max": null,
-        "incluye_min": true,
-        "incluye_max": false
-      },
       "t": {
         "min": null,
         "max": null,
         "incluye_min": false,
         "incluye_max": false
-      }
-    },
-    "qt": {
+      },
       "n": {
         "min": 1e-323,
         "max": null,
         "incluye_min": true,
         "incluye_max": false
-      },
+      }
+    },
+    "qt": {
       "p": {
         "min": 0,
         "max": 1,
         "incluye_min": false,
+        "incluye_max": false
+      },
+      "n": {
+        "min": 1e-323,
+        "max": null,
+        "incluye_min": true,
         "incluye_max": false
       }
     },
