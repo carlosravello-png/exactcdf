@@ -39,8 +39,9 @@ function reglaPorEntrada(entrada, ref, funcion) {
         tol_ulps: max(entrada.relativa * abs(ref), entrada.absoluta) / ulp(ref),
         detalle: `max(${entrada.relativa}*|ref|, ${entrada.absoluta})` };
     case "lanza":
-      if (typeof entrada.argumento !== "string") {
-        return { regla: "sin_regla", tol_ulps: null, detalle: "lanza sin tolerancias.json › argumento de tipo cadena" };
+      if (typeof entrada.argumento !== "string" || typeof entrada.motivo !== "string") { // sesion 0d, cambio 4
+        return { regla: "sin_regla", tol_ulps: null,
+          detalle: `lanza sin tolerancias.json › ${typeof entrada.argumento !== "string" ? "argumento" : "motivo"} de tipo cadena` };
       }
       return { regla: "lanza", tol_ulps: null, motivo: entrada.motivo, argumento: entrada.argumento,
         detalle: `lanza ${entrada.motivo}` };
@@ -107,30 +108,54 @@ export function juzgar(r, x, ref) {
   return { ok, ulps: u, tol_ulps: t, fraccion };
 }
 
+// Descripcion de un valor ajeno (devuelto o lanzado por el modulo probado), sesion 0d, cambio 3: las primitivas con String;
+// los objetos y las funciones solo con typeof, sin invocar ninguno de sus metodos.
+export const describir = (v) => ((typeof v === "object" && v !== null) || typeof v === "function" ? typeof v : Txt(v));
+
 // Juicio de una fila 'lanza' / 'informa_fallo': e = excepcion capturada (o undefined si no lanzo);
 // funcion = la publica que se prueba; valor = lo que el arnes paso en el argumento nombrado.
 // reglas.json › arnes_fallos v2: seis comprobaciones, en ese orden.
 export function juzgarFallo(r, e, devuelto, funcion, valor) {
+  try {
+    return juzgarFalloInterno(r, e, devuelto, funcion, valor);
+  } catch { // Proxy con trampas que lanzan, getter que lanza...: fallo de la fila, sin usar el valor
+    return { ok: false, clase: "valor no juzgable", detalle: `el valor lanzado (${typeof e}) no se pudo juzgar sin usar sus metodos` };
+  }
+}
+
+function juzgarFalloInterno(r, e, devuelto, funcion, valor) {
   if (e === undefined) {
-    return { ok: false, clase: "no lanzo", detalle: `devolvio ${Txt(devuelto)}; se esperaba StatsError motivo=${r.motivo}` };
+    return { ok: false, clase: "no lanzo", detalle: `devolvio ${describir(devuelto)}; se esperaba StatsError motivo=${r.motivo}` };
   }
   if (e === null || !(e instanceof ErrorRango)) { // 1 clase
-    return { ok: false, clase: "excepcion no StatsError", detalle: `no es RangeError: ${e?.name ?? typeof e}: ${e?.message ?? e}` };
+    return { ok: false, clase: "excepcion no StatsError", detalle: `no es RangeError: ${describir(e?.name ?? typeof e)}: ${describir(e?.message ?? e)}` };
   }
   if (e.name !== "StatsError") { // 2 name
-    return { ok: false, clase: "excepcion no StatsError", detalle: `${e.name}: ${e.message}` };
+    return { ok: false, clase: "excepcion no StatsError", detalle: `${describir(e.name)}: ${describir(e.message)}` };
   }
   if (e.funcion !== funcion) { // 3 funcion
-    return { ok: false, clase: "StatsError con funcion distinta", detalle: `funcion=${e.funcion} (esperado ${funcion})` };
+    return { ok: false, clase: "StatsError con funcion distinta", detalle: `funcion=${describir(e.funcion)} (esperado ${funcion})` };
   }
   const motivoOk = e.motivo === r.motivo; // 4 motivo
   const argOk = e.argumento === r.argumento; // 5 argumento
   if (!(motivoOk && argOk)) {
     return { ok: false, clase: "StatsError con motivo o argumento distinto",
-      detalle: `motivo=${e.motivo} argumento=${e.argumento} (esperado motivo=${r.motivo} argumento=${r.argumento})` };
+      detalle: `motivo=${describir(e.motivo)} argumento=${describir(e.argumento)} (esperado motivo=${r.motivo} argumento=${r.argumento})` };
   }
   if (!mismo(e.valor, valor)) { // 6 valor (distingue -0 y NaN)
-    return { ok: false, clase: "StatsError con valor distinto", detalle: `valor=${Txt(e.valor)} (esperado ${Txt(valor)})` };
+    return { ok: false, clase: "StatsError con valor distinto", detalle: `valor=${describir(e.valor)} (esperado ${describir(valor)})` };
   }
-  return { ok: true, clase: "ok", detalle: `motivo=${e.motivo} argumento=${e.argumento} valor=${Txt(e.valor)}` };
+  return { ok: true, clase: "ok", detalle: `motivo=${describir(e.motivo)} argumento=${describir(e.argumento)} valor=${describir(e.valor)}` };
 }
+
+// Congelado en profundidad (sesion 0d, cambio 1), al cargarse el modulo y antes de que run.js importe el modulo probado:
+// ningun modulo probado puede cambiar una regla, un tramo ni el orden de los dominios.
+const propiedadesDe = Object.getOwnPropertyNames;
+const congelarObjeto = Object.freeze;
+function congelar(v) {
+  if (typeof v !== "object" || v === null) return v;
+  for (const k of propiedadesDe(v)) congelar(v[k]);
+  return congelarObjeto(v);
+}
+congelar(TOLERANCIAS);
+congelar(REGLAS);

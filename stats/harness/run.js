@@ -1,12 +1,12 @@
 // Arnes: node stats/harness/run.js --funcion <f> [--region <etiqueta>] [--modulo <ruta>]
 // Lee tests/fixtures/<f>.csv, llama a la funcion con los argumentos de las columnas <arg>_hex
 // (en el orden de reglas.json › dominios), juzga con tolerancia.js y resume por etiqueta.
-import { writeFileSync, existsSync } from "node:fs";
+import { writeFileSync, existsSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { leerCsv, rutaFixture } from "./csv.js";
 import { parseHex } from "./hexfloat.js";
-import { regla, juzgar, juzgarFallo, TOLERANCIAS, REGLAS } from "./tolerancia.js";
+import { regla, juzgar, juzgarFallo, describir, TOLERANCIAS, REGLAS } from "./tolerancia.js";
 
 // Copias locales de los globales que run.js usa despues del import() del modulo probado, tomadas aqui
 // (antes del import()); despues del import() solo se usan estas. Solo se usan antes del import() y no se copian:
@@ -35,6 +35,24 @@ const salir = process.exit;
 const DIR_INFORMES = new URL("../informes/", import.meta.url);
 const MODULO_POR_DEFECTO = new URL("../src/stats.js", import.meta.url);
 
+// Sesion 0d, cambio 2: se borra el _ultimo_<f>.json anterior al arrancar, antes del import() del modulo probado, para que un
+// modulo que termine el proceso no deje un veredicto viejo pasando por el de esta corrida. Solo si <f> es un nombre simple
+// (letras ASCII, digitos y _; sin expresiones regulares): con '/', '..' u otro caracter no se borra ni se escribe ningun archivo.
+const esNombreSimple = (s) => {
+  if (s.length === 0) return false;
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i);
+    if (!((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122) || c === 95)) return false;
+  }
+  return true;
+};
+{
+  const f = opciones(process.argv.slice(2)).funcion;
+  if (typeof f === "string" && esNombreSimple(f)) rmSync(new Url(`_ultimo_${f}.json`, DIR_INFORMES), { force: true });
+}
+// Nombre de una excepcion ajena para los mensajes, sin invocar sus metodos (sesion 0d, cambio 3).
+const nombreDe = (e) => { try { return describir(e.name); } catch { return typeof e; } };
+
 function opciones(argv) {
   const o = {};
   for (let i = 0; i < argv.length; i++) {
@@ -60,6 +78,10 @@ async function main() {
   if (typeof funcion !== "string") {
     console.error("uso: node stats/harness/run.js --funcion <nombre> [--region <etiqueta>] [--modulo <ruta>]");
     process.exit(2);
+  }
+  if (!esNombreSimple(funcion)) { // sesion 0d, cambio 2: ROJO sin tocar ningun archivo (ni _ultimo_<f>.json ni otro .json)
+    log(`Funcion: ${funcion}\n--funcion debe ser un nombre simple (solo letras ASCII, digitos y _); no se borra ni se escribe ningun archivo\nROJO`);
+    salir(1);
   }
   const base = { funcion, region_filtrada: typeof o.region === "string" ? o.region : null,
     generado: new Date().toISOString(), archivo_json: `stats/informes/_ultimo_${funcion}.json` };
@@ -120,31 +142,38 @@ async function main() {
     let devuelto, excepcion;
     try { devuelto = fn(...llamada); } catch (e) { excepcion = e ?? new Err("lanzo un valor falsy"); }
 
-    const sinArg = (r.regla === "lanza" || r.regla === "informa_fallo") && !nombres.includes(r.argumento);
-    if (r.regla === "sin_regla" || sinArg) {
-      if (sinArg) r.detalle = `argumento '${r.argumento}' no esta en la firma de ${funcion} (${nombres.join(", ")})`;
-      ok = false; clase = "sin regla en el arnes"; detalle = r.detalle; ulpsMedido = Infinity;
-      if (sinArg) r.regla = "sin_regla";
-    } else if (r.regla === "lanza" || r.regla === "informa_fallo") {
-      // valor que el arnes paso en el argumento nombrado (en pchisq es nu, no nu/2)
-      const j = juzgarFallo(r, excepcion, devuelto, funcion, argsNum[nombres.indexOf(r.argumento)]);
-      ok = j.ok; clase = j.clase; detalle = j.detalle;
-      if (!ok) ulpsMedido = Infinity;
-    } else if (excepcion !== undefined) {
-      ok = false; ulpsMedido = Infinity; detalle = `${excepcion.name}: ${excepcion.message}`;
-      clase = excepcion.name === "StatsError" ? "StatsError donde la referencia es un numero" : "excepcion no StatsError";
-    } else if (typeof devuelto !== "number") {
-      ok = false; ulpsMedido = Infinity; clase = "no devolvio number"; detalle = `devolvio ${typeof devuelto}`;
-    } else if (esNaN(devuelto)) {
-      ok = false; ulpsMedido = Infinity; clase = "NaN"; detalle = "devolvio NaN";
-    } else {
-      const j = juzgar(r, devuelto, ref);
-      ok = j.ok; ulpsMedido = j.ulps; fraccion = j.fraccion;
-      if (!ok) { clase = "fuera de tolerancia"; detalle = `x=${devuelto} ref=${ref} ulps=${fmt(j.ulps)} tol=${fmt(j.tol_ulps)}`; }
+    // Sesion 0d, cambio 3: cualquier valor raro devuelto o lanzado por el modulo probado (Symbol, BigInt, Object.create(null),
+    // Proxy, funcion...) se juzga como fallo de esta fila; los mensajes usan solo typeof y String de primitivas (describir).
+    try {
+      const sinArg = (r.regla === "lanza" || r.regla === "informa_fallo") && !nombres.includes(r.argumento);
+      if (r.regla === "sin_regla" || sinArg) {
+        if (sinArg) r.detalle = `argumento '${r.argumento}' no esta en la firma de ${funcion} (${nombres.join(", ")})`;
+        ok = false; clase = "sin regla en el arnes"; detalle = r.detalle; ulpsMedido = Infinity;
+        if (sinArg) r.regla = "sin_regla";
+      } else if (r.regla === "lanza" || r.regla === "informa_fallo") {
+        // valor que el arnes paso en el argumento nombrado (en pchisq es nu, no nu/2)
+        const j = juzgarFallo(r, excepcion, devuelto, funcion, argsNum[nombres.indexOf(r.argumento)]);
+        ok = j.ok; clase = j.clase; detalle = j.detalle;
+        if (!ok) ulpsMedido = Infinity;
+      } else if (excepcion !== undefined) {
+        ok = false; ulpsMedido = Infinity; detalle = `${nombreDe(excepcion)}: ${describir(excepcion.message)}`;
+        clase = excepcion.name === "StatsError" ? "StatsError donde la referencia es un numero" : "excepcion no StatsError";
+      } else if (typeof devuelto !== "number") {
+        ok = false; ulpsMedido = Infinity; clase = "no devolvio number"; detalle = `devolvio ${typeof devuelto}`;
+      } else if (esNaN(devuelto)) {
+        ok = false; ulpsMedido = Infinity; clase = "NaN"; detalle = "devolvio NaN";
+      } else {
+        const j = juzgar(r, devuelto, ref);
+        ok = j.ok; ulpsMedido = j.ulps; fraccion = j.fraccion;
+        if (!ok) { clase = "fuera de tolerancia"; detalle = `x=${devuelto} ref=${ref} ulps=${fmt(j.ulps)} tol=${fmt(j.tol_ulps)}`; }
+      }
+    } catch {
+      ok = false; ulpsMedido = Infinity; fraccion = null; clase = "valor no juzgable";
+      detalle = `el valor ${excepcion === undefined ? "devuelto" : "lanzado"} (${typeof (excepcion === undefined ? devuelto : excepcion)}) no se pudo juzgar sin usar sus metodos`;
     }
 
     if (verIds?.has(fila.id)) {
-      detalleIds.push(`  fila id ${fila.id} (${fila.region}${fila.fuera_de_rango ? ", " + fila.fuera_de_rango : ""}): ${ok ? "pasa" : "FALLA"}; regla=${r.regla}; ref=${ref}; devolvio=${excepcion ? excepcion.name : devuelto}; ulps=${ulpsMedido === null ? "-" : fmt(ulpsMedido)}; tol_ulps=${r.tol_ulps === null ? "-" : fmt(r.tol_ulps)}${ok ? "" : "; " + clase}`);
+      detalleIds.push(`  fila id ${fila.id} (${fila.region}${fila.fuera_de_rango ? ", " + fila.fuera_de_rango : ""}): ${ok ? "pasa" : "FALLA"}; regla=${r.regla}; ref=${ref}; devolvio=${excepcion ? nombreDe(excepcion) : describir(devuelto)}; ulps=${ulpsMedido === null ? "-" : fmt(ulpsMedido)}; tol_ulps=${r.tol_ulps === null ? "-" : fmt(r.tol_ulps)}${ok ? "" : "; " + clase}`);
     }
 
     let e = porEtiqueta.get(fila.region);
