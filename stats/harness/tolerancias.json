@@ -399,6 +399,7 @@
         "metodo": "PENDIENTE",
         "tipo": "lanza",
         "motivo": "pendiente",
+        "argumento": "a",
         "origen": "D4 v2 (firmada el 21/10/2026)",
         "nota": "a >= a* (constante de reglas.json): la referencia desborda y rige P3 por precedencia"
       }
