@@ -1,6 +1,6 @@
 # arnes_2 · corrección del arnés antes de congelarlo (sesión 0b)
 
-Fecha: 2026-10-26. Node v24.22.1. Rama construccion, HEAD 0c6010c95eb1febbc5c1885d82364171c7bf5a57, `git status --short` vacío al empezar. Sin más git.
+Fecha: 2026-10-25 (corregida en la sesión 0c; decía 2026-10-26; convención 7.4). Node v24.22.1. Rama construccion, HEAD 0c6010c95eb1febbc5c1885d82364171c7bf5a57, `git status --short` vacío al empezar. Sin más git.
 
 ## Cambios (solo `tolerancia.js` y `run.js`)
 1. P2 subnormal: el límite sale de `reglas.json › P2.subnormal_ulps` (6.1).

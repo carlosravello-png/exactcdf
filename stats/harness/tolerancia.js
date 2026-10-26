@@ -3,6 +3,14 @@
 import { readFileSync } from "node:fs";
 import { ulp, ulps } from "./ulps.js";
 
+// Copias locales, tomadas al cargar (antes de que run.js importe el modulo probado); solo se usan estas.
+const abs = Math.abs;
+const esNaN = Number.isNaN;
+const mismo = Object.is;
+const max = Math.max;
+const ErrorRango = RangeError;
+const Txt = String;
+
 const leer = (n) => JSON.parse(readFileSync(new URL(n, import.meta.url), "utf8"));
 export const TOLERANCIAS = leer("./tolerancias.json");
 export const REGLAS = leer("./reglas.json");
@@ -22,15 +30,18 @@ const dentro = (a, t) =>
 function reglaPorEntrada(entrada, ref, funcion) {
   switch (entrada.tipo) {
     case "relativa":
-      return { regla: "relativa", tol_ulps: (entrada.valor * Math.abs(ref)) / ulp(ref),
+      return { regla: "relativa", tol_ulps: (entrada.valor * abs(ref)) / ulp(ref),
         detalle: `relativa ${entrada.valor}` };
     case "ulps":
       return { regla: "ulps", tol_ulps: entrada.valor, detalle: `${entrada.valor} ulps` };
     case "relativa_con_suelo_absoluto":
       return { regla: "relativa_con_suelo_absoluto",
-        tol_ulps: Math.max(entrada.relativa * Math.abs(ref), entrada.absoluta) / ulp(ref),
+        tol_ulps: max(entrada.relativa * abs(ref), entrada.absoluta) / ulp(ref),
         detalle: `max(${entrada.relativa}*|ref|, ${entrada.absoluta})` };
     case "lanza":
+      if (typeof entrada.argumento !== "string") {
+        return { regla: "sin_regla", tol_ulps: null, detalle: "lanza sin tolerancias.json › argumento de tipo cadena" };
+      }
       return { regla: "lanza", tol_ulps: null, motivo: entrada.motivo, argumento: entrada.argumento,
         detalle: `lanza ${entrada.motivo}` };
     case "informa_fallo": {
@@ -70,15 +81,16 @@ export function regla({ funcion, region, fuera_de_rango, args, ref }) {
   // precedencia 3: la entrada de la etiqueta
   const entrada = TOLERANCIAS[region];
   if (entrada === undefined) return { regla: "sin_regla", tol_ulps: null, detalle: `etiqueta '${region}' no esta en tolerancias.json` };
+  // la etiqueta debe ser de la funcion probada (entrada.funcion) o de su familia (reglas.json › familias)
+  if (entrada.funcion !== funcion && REGLAS.familias?.[funcion] !== `usa las etiquetas de ${entrada.funcion}`) {
+    return { regla: "sin_regla", tol_ulps: null, detalle: `etiqueta '${region}' es de '${entrada.funcion}', no de '${funcion}'` };
+  }
   if (entrada.tipo === "tramos_por_a") {
     const arg = entrada.tipo.slice("tramos_por_".length); // AMBIGÜEDAD #10: variable de los tramos = sufijo del nombre del tipo
     const v = args?.[arg];
     const tramo = entrada.tramos.find((t) => dentro(v, t));
     if (tramo === undefined) return { regla: "sin_regla", tol_ulps: null, detalle: `${region}: ${arg}=${v} no cae en ningun tramo` };
     const r = reglaPorEntrada(tramo, ref, funcion);
-    if (r.regla === "lanza" && typeof r.argumento !== "string") {
-      return { regla: "sin_regla", tol_ulps: null, detalle: `${region} tramo ${tramo.a}: falta tolerancias.json › tramos[].argumento` };
-    }
     r.detalle = `${region} tramo ${tramo.a}: ${r.detalle}`;
     return r;
   }
@@ -90,21 +102,35 @@ export function regla({ funcion, region, fuera_de_rango, args, ref }) {
 export function juzgar(r, x, ref) {
   const u = ulps(x, ref);
   const t = r.tol_ulps;
-  const ok = typeof x === "number" && !Number.isNaN(x) && u <= t;
+  const ok = typeof x === "number" && !esNaN(x) && u <= t;
   const fraccion = t > 0 ? u / t : u === 0 ? 0 : Infinity;
   return { ok, ulps: u, tol_ulps: t, fraccion };
 }
 
-// Juicio de una fila 'lanza' / 'informa_fallo': e = excepcion capturada (o undefined si no lanzo).
-export function juzgarFallo(r, e, devuelto) {
+// Juicio de una fila 'lanza' / 'informa_fallo': e = excepcion capturada (o undefined si no lanzo);
+// funcion = la publica que se prueba; valor = lo que el arnes paso en el argumento nombrado.
+// reglas.json › arnes_fallos v2: seis comprobaciones, en ese orden.
+export function juzgarFallo(r, e, devuelto, funcion, valor) {
   if (e === undefined) {
-    return { ok: false, clase: "no lanzo", detalle: `devolvio ${String(devuelto)}; se esperaba StatsError motivo=${r.motivo}` };
+    return { ok: false, clase: "no lanzo", detalle: `devolvio ${Txt(devuelto)}; se esperaba StatsError motivo=${r.motivo}` };
   }
-  if (e === null || e.name !== "StatsError") {
-    return { ok: false, clase: "excepcion no StatsError", detalle: `${e?.name ?? typeof e}: ${e?.message ?? e}` };
+  if (e === null || !(e instanceof ErrorRango)) { // 1 clase
+    return { ok: false, clase: "excepcion no StatsError", detalle: `no es RangeError: ${e?.name ?? typeof e}: ${e?.message ?? e}` };
   }
-  const motivoOk = e.motivo === r.motivo;
-  const argOk = e.argumento === r.argumento; // los tres campos (name, motivo, argumento), en lanza e informa_fallo
-  return { ok: motivoOk && argOk, clase: motivoOk && argOk ? "ok" : "StatsError con motivo o argumento distinto",
-    detalle: `motivo=${e.motivo} argumento=${e.argumento} (esperado motivo=${r.motivo} argumento=${r.argumento})` };
+  if (e.name !== "StatsError") { // 2 name
+    return { ok: false, clase: "excepcion no StatsError", detalle: `${e.name}: ${e.message}` };
+  }
+  if (e.funcion !== funcion) { // 3 funcion
+    return { ok: false, clase: "StatsError con funcion distinta", detalle: `funcion=${e.funcion} (esperado ${funcion})` };
+  }
+  const motivoOk = e.motivo === r.motivo; // 4 motivo
+  const argOk = e.argumento === r.argumento; // 5 argumento
+  if (!(motivoOk && argOk)) {
+    return { ok: false, clase: "StatsError con motivo o argumento distinto",
+      detalle: `motivo=${e.motivo} argumento=${e.argumento} (esperado motivo=${r.motivo} argumento=${r.argumento})` };
+  }
+  if (!mismo(e.valor, valor)) { // 6 valor (distingue -0 y NaN)
+    return { ok: false, clase: "StatsError con valor distinto", detalle: `valor=${Txt(e.valor)} (esperado ${Txt(valor)})` };
+  }
+  return { ok: true, clase: "ok", detalle: `motivo=${e.motivo} argumento=${e.argumento} valor=${Txt(e.valor)}` };
 }
