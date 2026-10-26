@@ -17,12 +17,21 @@
   },
   "P2": {
     "subnormal": "|x - double de la referencia| <= 2 ulps de subnormal (2 * 2^-1074)",
+    "subnormal_ulps": 2,
     "cero": "0 exacto",
     "fallo": "devolver 0 donde la referencia es un double normal"
   },
   "P3": "inf: +-Infinity exacto, con el signo de la referencia",
   "relativa_con_suelo_absoluto": "|x - ref| <= max(relativa * |ref|, absoluta)",
-  "informa_fallo": "no tiene numero: se prueba que lance StatsError con motivo indeterminado (D4 v2)",
+  "informa_fallo": {
+    "texto": "no tiene numero: se prueba que lance StatsError con motivo indeterminado (D4 v2)",
+    "motivo": "indeterminado",
+    "argumento": {
+      "pgamma": "a",
+      "pchisq": "nu"
+    },
+    "origen": "paquete 6 (26/10/2026): campos estructurados; argumento por B15 de la auditoria T''"
+  },
   "lanza": "se prueba que lance StatsError con el motivo indicado; no hay valor que medir",
   "fallo_informado": {
     "estado": "D4 v2, FIRMADA por Carlos el 21/10/2026",
