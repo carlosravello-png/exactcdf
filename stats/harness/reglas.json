@@ -62,7 +62,21 @@
     "criterio": "todo argumento es un double finito dentro del intervalo declarado; -0 pertenece si y solo si 0 pertenece; los limites no se devuelven",
     "nan_interno": "un NaN fabricado dentro con argumentos validos es un defecto de stats.js, no un StatsError: el arnes lo cuenta como fallo"
   },
-  "arnes_fallos": "una prueba de fallo exige e.name === 'StatsError' y e.motivo y e.argumento iguales a los esperados; no basta con que lance",
+  "arnes_fallos": {
+    "texto_v1": "una prueba de fallo exige e.name === 'StatsError' y e.motivo y e.argumento iguales a los esperados; no basta con que lance",
+    "version": 2,
+    "regla": "una fila de fallo pasa solo si se cumplen las seis comprobaciones; no basta con que lance",
+    "comprobaciones": [
+      "1 clase: e instanceof RangeError (fallo_informado.clase; RangeError es la clase global del motor, no la StatsError importada)",
+      "2 name: e.name === 'StatsError'",
+      "3 funcion: e.funcion === la funcion publica que se prueba (la de --funcion), nunca una interna",
+      "4 motivo: e.motivo === el esperado (tolerancias.json lanza o reglas.json informa_fallo)",
+      "5 argumento: e.argumento === el esperado (idem)",
+      "6 valor: Object.is(e.valor, v), v = el valor que el arnes paso en el argumento nombrado (distingue -0 y NaN)"
+    ],
+    "no_se_comparan": "region (depende de la clasificacion, que es del fixture) y dominio (fuera de la lista acordada; candidato para arnes-v2)",
+    "origen": "paquete 7 (26/10/2026): hallazgos H1 y H2 de la auditoria del arnes (Fable)"
+  },
   "constantes": {
     "gamma_a_desborde": {
       "valor": 171.62437695630274,
