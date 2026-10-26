@@ -62,8 +62,10 @@ async function main() {
   try { mod = await import(rutaModulo.href); } catch (e) {
     rojo(`no se pudo cargar el modulo ${rutaModulo.href}: ${e.message}`);
   }
-  const fn = typeof mod[funcion] === "function" ? mod[funcion] : typeof mod["_" + funcion] === "function" ? mod["_" + funcion] : null;
-  if (fn === null) rojo(`el modulo ${rutaModulo.href} no exporta '${funcion}' ni '_${funcion}'`);
+  // la reserva '_<f>' vale solo para gamma1pm1 (interna); para las demas, sin '<f>' publica es ROJO
+  const fn = typeof mod[funcion] === "function" ? mod[funcion]
+    : funcion === "gamma1pm1" && typeof mod["_" + funcion] === "function" ? mod["_" + funcion] : null;
+  if (fn === null) rojo(`el modulo ${rutaModulo.href} no exporta '${funcion}'${funcion === "gamma1pm1" ? " ni '_gamma1pm1'" : ""}`);
   base.modulo = rutaModulo.href;
 
   // orden de los argumentos: claves de reglas.json › dominios (gamma1pm1: un solo argumento 'a')
@@ -84,7 +86,7 @@ async function main() {
     const ref = parseHex(fila.ref_mp70_hex);
     const llamada = [...argsNum];
     if (conTail && fila.lower_tail !== "") llamada.push(fila.lower_tail === "1");
-    const r = regla({ region: fila.region, fuera_de_rango: fila.fuera_de_rango, args, ref });
+    const r = regla({ funcion, region: fila.region, fuera_de_rango: fila.fuera_de_rango, args, ref });
 
     let ok, ulpsMedido = null, fraccion = null, clase = "ok", detalle = "";
     let devuelto, excepcion;

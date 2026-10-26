@@ -9,11 +9,13 @@ Cada apunte: fuente, cita, lecturas posibles, y la que se toma provisionalmente 
 - Tomada: (b), dentro de `stats/` (no es la raíz). Sin dependencias ni scripts. Si el supervisor lo considera prohibido, se borra y se exige Node ≥ 20.19.
 
 ## #2 · `argumento` esperado en `informa_fallo` (pgamma_indet)
+- **RESUELTA** por el paquete 6 (6.2, 6.3: `reglas.json › informa_fallo.argumento`, `a` en pgamma, `nu` en pchisq) y la sesión 0b: el arnés exige `name`, `motivo` y `argumento` (ver `informes/arnes_2.md`).
 - Fuente: `reglas.json › informa_fallo`: «no tiene numero: se prueba que lance StatsError con motivo indeterminado (D4 v2)». `tolerancias.json › pgamma_indet`: `clase: vacia`, `tipo: informa_fallo`, sin argumento.
 - Lecturas: (a) exigir solo `name` y `motivo`; (b) exigir además un `argumento` (¿`x`? ¿`a`?), que ningún texto fija.
 - Tomada: (a). `tolerancia.js` devuelve `argumento` indefinido y no se compara. `arnes_fallos` exige `argumento` «iguales a los esperados»: aquí no hay esperado. Ningún fixture tiene la etiqueta `pgamma_indet`, así que hoy no afecta.
 
 ## #3 · Números dentro de textos de `reglas.json`
+- **RESUELTA** por el paquete 6 (6.1, 6.2: `P2.subnormal_ulps`, `informa_fallo.motivo`) y la sesión 0b: `tolerancia.js` lee los campos y ya no tiene expresiones regulares (`informes/arnes_2.md`).
 - Fuente: `reglas.json › P2.subnormal` («<= 2 ulps de subnormal (2 * 2^-1074)») e `informa_fallo` («con motivo indeterminado»). No son campos estructurados.
 - Lecturas: copiar el 2 y el motivo a mano (prohibido por la sesión: «ningún número de tolerancia ni constante copiado a mano») o extraerlos del texto.
 - Tomada: extraerlos del texto con una expresión regular (`tolerancia.js`); si el texto cambia de forma, el arnés lanza error al cargar. Se sugiere al supervisor estructurar esos campos (`"subnormal_ulps": 2`, `"motivo": "indeterminado"`).
@@ -40,4 +42,11 @@ Cada apunte: fuente, cita, lecturas posibles, y la que se toma provisionalmente 
 - Observación: de las 43 filas `subnormal` de `erfc.csv`, fallan 41; las otras 2 tienen referencia de ≤ 2 ulps de subnormal y 0 está dentro de P2. No es un defecto: es lo que dice P2.
 
 ## #9 · Ampliaciones del arnés no pedidas
+- **RESUELTA** (ver también #10) en la sesión 0b: las ampliaciones se mantienen tal cual y quedan registradas en `informes/arnes_1.md`/`arnes_2.md` para la auditoría; la reserva `_<f>` queda restringida a gamma1pm1 (`run.js`).
 - `run.js --ids <lista>` (depuración: detalle de filas concretas), `hexfloat.aHex`, y en `error.js` `MOTIVOS`, `dominioDe`, `argumentosDe`. No cambian ningún juicio.
+
+## #10 · Qué argumento selecciona el tramo en `gamma_fuera` (sesión 0b)
+- Fuente: `tolerancias.json › gamma_fuera.tipo = "tramos_por_a"`; el paquete 6 (6.4) estructura solo el `argumento` del tramo que lanza, no la variable que elige el tramo.
+- Hueco: ningún campo dice por qué argumento se parte; solo lo dice el sufijo del nombre del tipo.
+- Lecturas: (a) sufijo del tipo (`"tramos_por_".length`, sin expresión regular); (b) fijar `a` en el código.
+- Tomada: (a), comentada `// AMBIGÜEDAD #10` en `tolerancia.js`. Se sugiere al supervisor un campo `variable` en `gamma_fuera`.

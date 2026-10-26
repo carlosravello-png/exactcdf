@@ -9,25 +9,17 @@ export const REGLAS = leer("./reglas.json");
 
 const SUBNORMAL_ULP = Number.MIN_VALUE; // 2^-1074 (reglas.json › medida.ulp)
 
-// reglas.json › P2.subnormal: "|x - ...| <= 2 ulps de subnormal (2 * 2^-1074)": se lee el factor del texto.
-const P2_SUBNORMAL_ULPS = (() => {
-  const m = /\(\s*(\d+(?:\.\d+)?)\s*\*\s*2\^-1074\s*\)/.exec(REGLAS.P2.subnormal);
-  if (m === null) throw new Error("reglas.json › P2.subnormal no tiene la forma '(N * 2^-1074)'");
-  return Number(m[1]);
-})();
-
-// reglas.json › informa_fallo: "... lance StatsError con motivo indeterminado (D4 v2)"
-const MOTIVO_INFORMA_FALLO = (() => {
-  const m = /motivo\s+(\w+)/.exec(REGLAS.informa_fallo);
-  if (m === null) throw new Error("reglas.json › informa_fallo no nombra un motivo");
-  return m[1];
-})();
+// Paquete 6 (6.1, 6.2): los campos estructurados de reglas.json; si faltan, el arnes no arranca.
+const P2_SUBNORMAL_ULPS = REGLAS.P2.subnormal_ulps;
+if (typeof P2_SUBNORMAL_ULPS !== "number") throw new Error("reglas.json › P2.subnormal_ulps no es un numero");
+const MOTIVO_INFORMA_FALLO = REGLAS.informa_fallo.motivo;
+if (typeof MOTIVO_INFORMA_FALLO !== "string") throw new Error("reglas.json › informa_fallo.motivo no es una cadena");
 
 const dentro = (a, t) =>
   (t.a_min === null || (t.incluye_min ? a >= t.a_min : a > t.a_min)) &&
   (t.a_max === null || (t.incluye_max ? a <= t.a_max : a < t.a_max));
 
-function reglaPorEntrada(entrada, ref) {
+function reglaPorEntrada(entrada, ref, funcion) {
   switch (entrada.tipo) {
     case "relativa":
       return { regla: "relativa", tol_ulps: (entrada.valor * Math.abs(ref)) / ulp(ref),
@@ -39,10 +31,18 @@ function reglaPorEntrada(entrada, ref) {
         tol_ulps: Math.max(entrada.relativa * Math.abs(ref), entrada.absoluta) / ulp(ref),
         detalle: `max(${entrada.relativa}*|ref|, ${entrada.absoluta})` };
     case "lanza":
-      return { regla: "lanza", tol_ulps: null, motivo: entrada.motivo, detalle: `lanza ${entrada.motivo}` };
-    case "informa_fallo":
-      return { regla: "informa_fallo", tol_ulps: null, motivo: MOTIVO_INFORMA_FALLO,
-        detalle: `informa fallo (${MOTIVO_INFORMA_FALLO})` };
+      return { regla: "lanza", tol_ulps: null, motivo: entrada.motivo, argumento: entrada.argumento,
+        detalle: `lanza ${entrada.motivo}` };
+    case "informa_fallo": {
+      // reglas.json › informa_fallo.argumento[<funcion publica que se prueba>] (paquete 6, 6.3)
+      const argumento = REGLAS.informa_fallo.argumento[funcion];
+      if (argumento === undefined) {
+        return { regla: "sin_regla", tol_ulps: null,
+          detalle: `reglas.json › informa_fallo.argumento no tiene entrada para '${funcion}'` };
+      }
+      return { regla: "informa_fallo", tol_ulps: null, motivo: MOTIVO_INFORMA_FALLO, argumento,
+        detalle: `informa fallo (${MOTIVO_INFORMA_FALLO}, argumento ${argumento})` };
+    }
     case "P1":
       return { regla: "no_implementado_en_arnes_v1", tol_ulps: null, detalle: "P1" };
     case "P2":
@@ -59,8 +59,9 @@ function reglaP2(clase, ref) {
         detalle: `P2: ${P2_SUBNORMAL_ULPS} ulps de subnormal` };
 }
 
-// fila = {region, fuera_de_rango, args: {nombre: valor}, ref}. Devuelve {regla, tol_ulps, ...}.
-export function regla({ region, fuera_de_rango, args, ref }) {
+// fila = {funcion, region, fuera_de_rango, args: {nombre: valor}, ref}; funcion = la publica que se prueba
+// (pchisq usa las etiquetas de pgamma, pero su argumento de indeterminado es otro). Devuelve {regla, tol_ulps, ...}.
+export function regla({ funcion, region, fuera_de_rango, args, ref }) {
   // precedencia 2: lo decide la referencia
   if (fuera_de_rango === "cero") return reglaP2("cero", ref);
   if (fuera_de_rango === "subnormal") return reglaP2("subnormal", ref);
@@ -70,16 +71,18 @@ export function regla({ region, fuera_de_rango, args, ref }) {
   const entrada = TOLERANCIAS[region];
   if (entrada === undefined) return { regla: "sin_regla", tol_ulps: null, detalle: `etiqueta '${region}' no esta en tolerancias.json` };
   if (entrada.tipo === "tramos_por_a") {
-    const arg = /_por_(\w+)$/.exec(entrada.tipo)[1]; // 'a'
+    const arg = entrada.tipo.slice("tramos_por_".length); // AMBIGÜEDAD #10: variable de los tramos = sufijo del nombre del tipo
     const v = args?.[arg];
     const tramo = entrada.tramos.find((t) => dentro(v, t));
     if (tramo === undefined) return { regla: "sin_regla", tol_ulps: null, detalle: `${region}: ${arg}=${v} no cae en ningun tramo` };
-    const r = reglaPorEntrada(tramo, ref);
-    if (r.regla === "lanza") r.argumento = arg;
+    const r = reglaPorEntrada(tramo, ref, funcion);
+    if (r.regla === "lanza" && typeof r.argumento !== "string") {
+      return { regla: "sin_regla", tol_ulps: null, detalle: `${region} tramo ${tramo.a}: falta tolerancias.json › tramos[].argumento` };
+    }
     r.detalle = `${region} tramo ${tramo.a}: ${r.detalle}`;
     return r;
   }
-  return reglaPorEntrada(entrada, ref);
+  return reglaPorEntrada(entrada, ref, funcion);
 }
 
 // Juicio de una fila numerica: devuelve {ok, ulps, tol_ulps, fraccion}.
@@ -101,7 +104,7 @@ export function juzgarFallo(r, e, devuelto) {
     return { ok: false, clase: "excepcion no StatsError", detalle: `${e?.name ?? typeof e}: ${e?.message ?? e}` };
   }
   const motivoOk = e.motivo === r.motivo;
-  const argOk = r.argumento === undefined || e.argumento === r.argumento;
+  const argOk = e.argumento === r.argumento; // los tres campos (name, motivo, argumento), en lanza e informa_fallo
   return { ok: motivoOk && argOk, clase: motivoOk && argOk ? "ok" : "StatsError con motivo o argumento distinto",
-    detalle: `motivo=${e.motivo} argumento=${e.argumento} (esperado motivo=${r.motivo}${r.argumento === undefined ? "" : " argumento=" + r.argumento})` };
+    detalle: `motivo=${e.motivo} argumento=${e.argumento} (esperado motivo=${r.motivo} argumento=${r.argumento})` };
 }
