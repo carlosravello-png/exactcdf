@@ -50,3 +50,41 @@ Cada apunte: fuente, cita, lecturas posibles, y la que se toma provisionalmente 
 - Hueco: ningún campo dice por qué argumento se parte; solo lo dice el sufijo del nombre del tipo.
 - Lecturas: (a) sufijo del tipo (`"tramos_por_".length`, sin expresión regular); (b) fijar `a` en el código.
 - Tomada: (a), comentada `// AMBIGÜEDAD #10` en `tolerancia.js`. Se sugiere al supervisor un campo `variable` en `gamma_fuera`.
+
+## #11 · Corte de la serie de C7 (sesión 1, primitivas)
+- Sección: expediente C7 (l. 1392) y D6.2 paso 8 (l. 1457): «sumada hasta el primer término ≤ 2⁻⁵³·suma».
+- Cita: «por la serie Σ_{n≥0} rh²ⁿ/(2n + 3) (folio 379, C7), sumada hasta el primer término ≤ 2⁻⁵³·suma».
+- Lecturas: (a) el término que cumple el criterio se incluye en la suma y se corta; (b) se corta antes de sumarlo.
+- Tomada (provisional, la más literal para «sumada hasta»): (a). `// AMBIGÜEDAD #11` en `phi1_serie` de `primitivas.js`. La diferencia es de 2⁻⁵³ relativo en f, que entra multiplicado por r³: no afecta ningún fixture previsible.
+
+## #12 · Orden de producto y cociente dentro de las razones racionales de Cody (sesión 1, erf/erfc/pnorm)
+- Sección: expediente 6.4 (l. 234) y T1 (l. 817, 831, 853): «erf(x) ≈ x·Σ pⱼx²ʲ / Σ qⱼx²ʲ»; «(1/x²)·Σ pⱼx⁻²ʲ / Σ qⱼx⁻²ʲ». C1 fija Horner, no el orden del producto con el cociente.
+- Lecturas: (a) razón primero: x·(num/den), w·(num/den); (b) producto primero: (x·num)/den.
+- Tomada (provisional): (a), la razón R(x²) como objeto y luego el factor, que es como el texto nombra «x·R(x²)». `// AMBIGÜEDAD #12` en `_erfR1` y en `corcheteR3` de `erfc.js`. Diferencia esperada: ≤ 1 ulp; el arnés da VERDE con (a).
+
+## #13 · Cortocircuito e^(−x_hi²) = 0 en la exponencial de la cola (sesión 1, erfc/pnorm)
+- Sección: expediente l. 237-243 (diseño de e^(−x²)): «e^(−x²) = e^(−x_hi²)·e^(−del)»; «erfc desborda a cero antes de x ≈ 27 → 16·x < 432».
+- Hueco: el texto supone x < 27. Con x finito cerca de DBL_MAX, x + x_hi desborda a Infinity y (x − x_hi)·(x + x_hi) = 0·Infinity = NaN, y D4 v2 prohíbe devolver NaN con argumentos válidos.
+- Lecturas: (a) calcular del solo si e^(−x_hi²) ≠ 0 (el producto con un factor 0 vale 0 de todos modos); (b) añadir un umbral explícito (x > 27 → 0), que el texto no escribe y CLAUDE.md §4 prohíbe.
+- Tomada (provisional): (a). No cambia ningún valor donde el texto está definido. `// AMBIGÜEDAD #13` en `_expMenosX2` (erfc.js) y en `fi` (pnorm.js).
+
+## #12 (ampliación, lgamma/gamma1pm1) · mismo orden «razón primero» en los Apéndices C y D
+- Los Apéndices C y D (DM86) escriben `lnΓ(1 + x)/x = −P/Q`, `H(a) = a(ω + 1)`, `(t/a)ω`, etc. Se evalúan con la razón P/Q completa primero y después el factor (x, a, t/a), igual que en #12. `// AMBIGÜEDAD #12` en `_lgammaApD` y `_gamma1pm1`. El arnés da VERDE con esta lectura.
+
+## #14 · Hoja (11) con R = 0 (sesión 1, pgamma)
+- Sección: DM86 (11) `Q(a, x) = R(a, x)·[fracción continua]` (expediente l. 1004) y C3 (l. 1381, reescalado de Aₙ y Bₙ), D6.1 (l. 1428: «si x/2 también se hunde, R es en verdad menor que el menor double»).
+- Hueco: con x enorme (a < 1, x ≥ 1.1 va por (11) sin tope superior) los Bₙ crecen como xⁿ y desbordan antes de que el reescalado de C3 (solo después de cada par de pasos) actúe: ∞/∞ = NaN, que D4 v2 prohíbe devolver. Pasa solo cuando R es 0 (x > ~745).
+- Lecturas: (a) si R = 0, Q = 0 sin evaluar la fracción (el producto es 0 para cualquier fracción finita); (b) añadir un umbral explícito en x, que el texto no escribe.
+- Tomada (provisional): (a). `// AMBIGÜEDAD #14` en `hoja11` de `pgamma.js`. No cambia ningún valor donde la fracción es finita.
+
+## #15 · Evaluación de (28) y de las reducciones de BETALN (sesión 1, pbeta)
+- Sección: expediente 3a.5 (l. 1586), B22 (l. 1986), C35 (l. 1918) y C34 (l. 1917); 3a.6 (l. 1597).
+- Cita: «(28) se suma con n ascendente, con S acumulada: S₁ = 1 y S_{m+2} = S_m + q^m + q^(m+1)»; «BETALN multiplica los factores de la reducción de a, y de la de b (3a.6), y toma un solo logaritmo».
+- Hueco: el texto no fija cómo se forman q^m y b^(2n) (potencia directa o producto corriente), ni en qué orden se aplican las reducciones de a y de b, ni la forma exacta de cada factor.
+- Lecturas: (a) productos corrientes (qm ← qm·q², bp ← bp·b²) y reducción primero de a y luego de b, con el factor (a − 1)/(a + b − 1) escrito como a′/(a′ + b), a′ = a − 1; (b) `Math.pow` y otra forma de factor.
+- Tomada (provisional): (a). `// AMBIGÜEDAD #15` en `wDelta` y `betaln` de `pbeta.js`. Con (a) el arnés da VERDE (diferencia máxima con la tabla de D6b: 8 ulps).
+
+## #16 · Contabilidad de los bucles de BGRAT, BFRAC y BASYM (sesión 1, pbeta)
+- Sección: expediente D6b.6 (l. 1837-1849), 3a.4 (l. 1562-1567), C33 (l. 1916), B26 (l. 1988), #T2-6.
+- Hueco: (a) «ln 2⁻¹⁰⁷⁴» del paso 3 de D6b.6 no dice cómo se escribe en double; (b) en BASYM, «dos términos seguidos bajo 100ε·|suma|» no dice si el término n = 0 cuenta y si el contador se reinicia; (c) en BGRAT, el corte «|término| ≤ 15ε·|suma|» no dice si p₀J₀ cuenta.
+- Tomadas (provisionales): (a) `-1074 * Math.LN2`; (b) el término n = 0 no cuenta, y el contador se reinicia a 0 si un término supera el umbral; (c) p₀J₀ entra en la suma pero el corte se evalúa desde n = 1. `// AMBIGÜEDAD #16` en `bgrat` y `basym`. No cambian ningún veredicto del arnés.

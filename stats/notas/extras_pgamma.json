@@ -1,0 +1,1 @@
+[{"args":[-1,2],"motivo":"dominio","argumento":"x"},{"args":[1,0],"motivo":"dominio","argumento":"a"},{"args":[1,"-0"],"motivo":"dominio","argumento":"a"},{"args":[1,-1],"motivo":"dominio","argumento":"a"},{"args":[-5e-324,2],"motivo":"dominio","argumento":"x"}]
