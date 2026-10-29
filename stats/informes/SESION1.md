@@ -63,3 +63,21 @@ Ninguna cambia un veredicto del arnés ni un valor donde el texto está definido
 Lectura del expediente y los JSON: 35 min · primitivas: 10 min · erf, erfc y pnorm: 25 min · lgamma, gamma y gamma1pm1: 15 min · pgamma y pchisq: 35 min · pbeta: 40 min · informes y cierre: 15 min. Total ≈ 2 h 55 min.
 
 SESION1.md está en `stats/informes/SESION1.md`.
+
+## Corrección de la sesión 1b (29/10/2026)
+
+Los tiempos de la sesión 1 («Tiempo aproximado por etapa», total ≈ 2 h 55 min) y los «8. Tiempo aproximado» de cada informe no salen de una medición. Quedan sustituidos por estos, tomados por el supervisor de las marcas de tiempo de los archivos (hora local de Carlos, 26/10/2026):
+
+| etapa | marca de cierre | duración aproximada |
+|---|---|---|
+| inicio (tras las huellas del supervisor) | 21:22 | — |
+| lectura (`notas/lectura.md`) | 21:28 | 6 min |
+| primitivas (`primitivas_1.md`) | 21:30 | 2 min |
+| erf, erfc, pnorm (informes) | 21:47 | 17 min |
+| lgamma, gamma, gamma1pm1 (informes) | 21:53 | 6 min |
+| pgamma, pchisq (informes) | 21:59 | 6 min |
+| pbeta (`pbeta_1.md`) | 22:08 | 9 min |
+| `SESION1.md` | 22:09 | 1 min |
+| **total** | | **≈ 47 min** |
+
+Las duraciones incluyen las esperas de las aprobaciones de Carlos.

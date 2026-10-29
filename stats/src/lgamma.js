@@ -41,6 +41,7 @@ const C4 = .820756370353826E-03;
 
 // Apéndice D para 0.8 ≤ a ≤ 2.25 (3a.2): forma 1 + x para a < 1.6; forma 2 + x para 1.6 ≤ a ≤ 2.25.
 export function _lgammaApD(a) {
+  // AMBIGÜEDAD #12 (firmada, paquete 9, 9.4): la razón P/Q entera primero y después su factor
   if (a < 1.6) {
     const x = a - 1; // exacto (Sterbenz)
     const num = (((((D_P6 * x + D_P5) * x + D_P4) * x + D_P3) * x + D_P2) * x + D_P1) * x + D_P0;

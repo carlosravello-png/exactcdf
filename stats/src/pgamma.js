@@ -201,7 +201,7 @@ function hoja10(a, x) {
 // (11) Q = R(a, x)·[fracción continua]
 function hoja11(a, x) {
   const R = Rfun(a, x);
-  if (R === 0) return [0, false]; // AMBIGÜEDAD #14: Q = R·CF con R = 0 es 0 (evita ∞/∞ en la fracción con x enorme)
+  if (R === 0) return [0, false]; // AMBIGÜEDAD #14: Q = R·CF con R = 0 es 0 (evita ∞/∞ en la fracción con x enorme) (firmada, paquete 9, 9.2)
   return [R * _cf11(a, x), false];
 }
 

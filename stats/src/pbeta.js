@@ -50,7 +50,7 @@ function wDelta(a, b) {
     const p = a / (a + b);
     const q = b / (a + b);
     const bb = b * b;
-    // AMBIGÜEDAD #15: q^m y b^(2n) como productos corrientes
+    // AMBIGÜEDAD #15: q^m y b^(2n) como productos corrientes (firmada, paquete 9, 9.4)
     let S = 1; // S₁
     let qm = q; // q^m con m = 2n + 1
     let bp = 1; // b^(2n)
@@ -89,7 +89,7 @@ function betaln(a, b) {
     return (((0.5 * Math.log(2 * Math.PI) - 0.5 * Math.log(b0)) + bcorr(a0, b0)) - u) - v;
   }
   let prod = 1;
-  // AMBIGÜEDAD #15: se reduce primero a y luego b, con cada factor escrito como a′/(a′ + b), a′ = a − 1
+  // AMBIGÜEDAD #15: se reduce primero a y luego b, con cada factor escrito como a′/(a′ + b), a′ = a − 1 (firmada, paquete 9, 9.4)
   while (a0 > 2) { // B(a, b) = ((a − 1)/(a + b − 1))·B(a − 1, b)
     a0 = a0 - 1;
     prod = prod * (a0 / (a0 + b0));
@@ -245,7 +245,7 @@ function bgrat(a, b, par, w0) {
   let hl = dd_add([-uh, -ul], two_prod(b, Math.log(-lh)));
   hl = dd_add(hl, [-_lgamma(b), 0]);
   hl = dd_add(hl, [-algdiv(b, a), 0]);
-  // paso 3 (paso 0 de BGRAT, correcciones del 22/10): si ln M < ln 2⁻¹⁰⁷⁴, w = w₀   // AMBIGÜEDAD #16 (a)
+  // paso 3 (paso 0 de BGRAT, correcciones del 22/10): si ln M < ln 2⁻¹⁰⁷⁴, w = w₀   // AMBIGÜEDAD #16 (a) (firmada, paquete 9, 9.4)
   if (hl[0] + hl[1] < LN_MIN) return w0;
   const M = exp_dd(hl[0], hl[1]); // paso 4
   // paso 5: J₀ = Q(b, u)/H(b, u), u = uh
@@ -280,7 +280,7 @@ function bgrat(a, b, par, w0) {
     p.push(pn);
     const termino = pn * J;
     suma += termino;
-    if (Math.abs(termino) <= 15 * EPS * Math.abs(suma)) break; // AMBIGÜEDAD #16 (c): el corte se evalúa desde n = 1
+    if (Math.abs(termino) <= 15 * EPS * Math.abs(suma)) break; // AMBIGÜEDAD #16 (c): el corte se evalúa desde n = 1 (firmada, paquete 9, 9.4)
   }
   return w0 + M * suma;
 }
@@ -374,7 +374,7 @@ function basym(a, b, par) {
     pot = pot * bg;
     const termino = e[n] * L[n] * pot;
     suma += termino;
-    if (Math.abs(termino) <= 100 * EPS * Math.abs(suma)) { // AMBIGÜEDAD #16 (b): el término n = 0 no cuenta; el contador se reinicia
+    if (Math.abs(termino) <= 100 * EPS * Math.abs(suma)) { // AMBIGÜEDAD #16 (b): el término n = 0 no cuenta; el contador se reinicia (firmada, paquete 9, 9.4)
       bajo += 1;
       if (bajo >= 2) break;
     } else {

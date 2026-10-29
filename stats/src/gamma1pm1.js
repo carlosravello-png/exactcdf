@@ -45,6 +45,7 @@ export function _gamma1pm1(a) {
   // t = a si a ≤ 1/2; t = a − 1 si a > 1/2 (folio 388)
   const t = a <= 0.5 ? a : a - 1;
   // C4: se toma el primer tramo de la lista del folio que cumple la condición
+  // AMBIGÜEDAD #12 (firmada, paquete 9, 9.4): la razón P/Q entera primero y después su factor
   if (a <= 0) return a * (omega(t) + 1); // −1/2 ≤ a ≤ 0
   if (a <= 0.5) return a * omega1(t); // 0 ≤ a ≤ 1/2 (en a = 1/2: aω₁, con t = a)
   if (a <= 1) return (t / a) * omega(t); // 1/2 ≤ a ≤ 1

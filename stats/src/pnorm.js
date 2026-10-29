@@ -15,7 +15,7 @@ function fi(w) {
   const e1 = Math.exp(-(zh * zh) / 2);
   let cola; // ½·erfc(|w|/√2) = Φ(−|w|)
   if (e1 === 0) {
-    cola = 0; // AMBIGÜEDAD #13: producto con un factor 0 (evita 0·NaN si |z| + z_h desborda)
+    cola = 0; // AMBIGÜEDAD #13: producto con un factor 0 (evita 0·NaN si |z| + z_h desborda) (firmada, paquete 9, 9.1)
   } else {
     const del = (a - zh) * (a + zh);
     const E = e1 * Math.exp(-del / 2);

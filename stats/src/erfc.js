@@ -50,7 +50,7 @@ const C_Q4 = 2.56852019228982242072E+00;
 const C_Q5 = 1.00000000000000000000E+00;
 
 // Rama 1 (Cody, folio 631): x·R(x²) para |x| ≤ 0.46875. C1: Horner de mayor a menor grado.
-// AMBIGÜEDAD #12: el producto x·R se evalua como x·(num/den), la razon primero (el expediente escribe «x·Σ/Σ»).
+// AMBIGÜEDAD #12: el producto x·R se evalua como x·(num/den), la razon primero (el expediente escribe «x·Σ/Σ»). (firmada, paquete 9, 9.4)
 export function _erfR1(x) {
   const y = x * x;
   const num = ((((A_P4 * y + A_P3) * y + A_P2) * y + A_P1) * y + A_P0);
@@ -70,6 +70,7 @@ function corcheteR3(x) {
   const w = 1 / (x * x);
   const num = ((((C_P5 * w + C_P4) * w + C_P3) * w + C_P2) * w + C_P1) * w + C_P0;
   const den = ((((C_Q5 * w + C_Q4) * w + C_Q3) * w + C_Q2) * w + C_Q1) * w + C_Q0;
+  // AMBIGÜEDAD #12 (firmada, paquete 9, 9.4): la razón P/Q entera primero y después su factor
   return 1 / Math.sqrt(Math.PI) + w * (num / den);
 }
 
@@ -79,7 +80,7 @@ function corcheteR3(x) {
 export function _expMenosX2(x) {
   const xh = Math.trunc(16 * x) / 16;
   const e1 = Math.exp(-(xh * xh));
-  if (e1 === 0) return 0; // AMBIGÜEDAD #13: el producto e1·e^(−del) es 0 igual; evita 0·NaN si x + x_hi desborda (x cerca de DBL_MAX)
+  if (e1 === 0) return 0; // AMBIGÜEDAD #13: el producto e1·e^(−del) es 0 igual; evita 0·NaN si x + x_hi desborda (x cerca de DBL_MAX) (firmada, paquete 9, 9.1)
   const del = (x - xh) * (x + xh);
   return e1 * Math.exp(-del);
 }

@@ -80,7 +80,7 @@ export function phi1_apE(r) {
 }
 
 // C7 (expediente l. 1392): phi1(r) = sum_{n>=0} r^(2n)/(2n + 3), sumada hasta el primer termino <= 2^-53 * suma.
-// AMBIGÜEDAD #11: el termino que cumple el criterio se incluye en la suma.
+// AMBIGÜEDAD #11: el termino que cumple el criterio se incluye en la suma. (firmada, paquete 9, 9.4)
 export function phi1_serie(r) {
   const r2 = r * r;
   let pot = 1;
