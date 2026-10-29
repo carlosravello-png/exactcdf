@@ -8,6 +8,7 @@ import { _erfc, _erfcScaled } from "./erfc.js";
 import { _gamma } from "./gamma.js";
 import { _gamma1pm1 } from "./gamma1pm1.js";
 import { _delta24 } from "./lgamma.js";
+import { GAMMA_A_LOW } from "./constantes.js";
 
 const BIG = 20; // parámetros (7), IND = 0 (folio 379)
 const X0 = 31;
@@ -200,6 +201,13 @@ function hoja10(a, x) {
 
 // (11) Q = R(a, x)·[fracción continua]
 function hoja11(a, x) {
+  if (a <= GAMMA_A_LOW) {
+    // paquete 10, 10.1 (con 10.0): con a ≤ a_low, Γ(a) desborda y R = e⁻ˣxᵃ/Γ(a) no se puede formar; 1/Γ(a) = a(1 + H(a)) (5.4, B8)
+    // Q = ((e⁻ˣxᵃ(1 + H(a)))·[fracción (11)])·a, con el factor a al final (un solo redondeo en la zona subnormal)
+    const previo = (Math.exp(-x) * Math.pow(x, a)) * (1 + _gamma1pm1(a)); // AMBIGÜEDAD #17: e⁻ˣ directo, sin el desdoblamiento de D6.1 (lectura literal de 10.1)
+    if (previo === 0) return [0, false]; // 10.1: x > 745, Q < a·e⁻⁷⁴⁵ < 2⁻¹⁰⁷⁵
+    return [(previo * _cf11(a, x)) * a, false];
+  }
   const R = Rfun(a, x);
   if (R === 0) return [0, false]; // AMBIGÜEDAD #14: Q = R·CF con R = 0 es 0 (evita ∞/∞ en la fracción con x enorme) (firmada, paquete 9, 9.2)
   return [R * _cf11(a, x), false];

@@ -96,3 +96,9 @@ Cada apunte: fuente, cita, lecturas posibles, y la que se toma provisionalmente 
 - **#14** · Firmada la lectura (a): si R(a, x) = 0 en la hoja (11), Q = 0 y P = 1, sin evaluar la fracción (Q ≤ R/x con a ≤ 1). Subsección 9.2. La cota de D6.1 quedó extendida a todo x ≥ 1490.27 (9.3).
 - **#15** · Firmada la lectura (a): q^m y b^(2n) como productos corrientes; BETALN reduce primero a y luego b, con el factor a′/(a′ + b), a′ = a − 1. Subsección 9.4.
 - **#16** · Firmadas (a) `-1074 * Math.LN2`; (b) en BASYM el término n = 0 no cuenta y el contador vuelve a 0 si un término supera 100ε·|suma|; (c) en BGRAT p₀J₀ entra en la suma y el corte 15ε se evalúa desde n = 1. Subsección 9.4.
+
+## #17 · Producto previo en la hoja (11) con a ≤ a_low (sesión 1c, pgamma)
+- Sección: expediente 10.1 (l. 2227) y la marca de 10.0 y 10.1 bajo (11) (l. 1013).
+- Cita: «Q = ((e⁻ˣxᵃ·(1 + H(a)))·[fracción (11)])·a … Si e⁻ˣxᵃ(1 + H(a)) = 0 (x > 745), Q = 0».
+- Hueco: 10.1 no dice si e⁻ˣ se calcula también con el desdoblamiento de D6.1 (e^(−x/2) dos veces) para x > 700.
+- Tomada (la más literal): `Math.exp(-x)` directo, sin el desdoblamiento. Con x ≤ 745 el producto es subnormal o mayor y, multiplicado por la fracción (~1/x) y por a ≤ 2⁻¹⁰²⁴, el resultado cae bajo 2⁻¹⁰⁷⁵ de todos modos; no cambia ningún valor medible. `// AMBIGÜEDAD #17` en `hoja11` de `pgamma.js`. Pendiente de lectura firmada.

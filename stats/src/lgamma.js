@@ -76,5 +76,5 @@ export function _lgamma(a) {
 
 export function lgamma(a) {
   validar("lgamma", "a", a);
-  return _lgamma(a);
+  return _lgamma(a) + 0; // paquete 10, 10.6: lgamma(1) y lgamma(2) devuelven +0, nunca −0
 }

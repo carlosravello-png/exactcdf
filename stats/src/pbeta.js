@@ -5,10 +5,11 @@
 import { validar, validarLowerTail } from "./error.js";
 import { two_sum, two_prod, dd_add, dd_mul, dd_div, exp_dd, ln_dd, ln1m_dd, phi1_apE, phi1_serie } from "./primitivas.js";
 import { _erfc, _erfcScaled } from "./erfc.js";
-import { _gamma, } from "./gamma.js";
+import { _gamma } from "./gamma.js"; // paquete 10, 10.6: sin la coma colgante
 import { _gamma1pm1 } from "./gamma1pm1.js";
 import { _lgamma, _delta24 } from "./lgamma.js";
 import { _gratio, _cf11, _Rpequeno } from "./pgamma.js";
+import { GAMMA_A_LOW } from "./constantes.js";
 
 // 3a.4 y C39: ε = máx(ε₀, 10⁻¹⁵) = 10⁻¹⁵. BPSER y BUP: ε; BGRAT y BFRAC: 15ε; BASYM: 100ε.
 const EPS = Math.max(Number.EPSILON, 1e-15);
@@ -112,6 +113,12 @@ function lnG(a, b) {
   const s = Math.min(a, b);
   const l = Math.max(a, b);
   if (s >= 1) return -betaln(a, b);
+  if (s <= GAMMA_A_LOW) {
+    // paquete 10, 10.2: con s ≤ a_low, ln G = ln s + ln[(1 + H(s))·Γ(s + l)/Γ(l)], en suma de logaritmos (G primero pierde precisión relativa)
+    // si además l ≤ a_low, Γ(s + l)/Γ(l) = l/(s + l) (10.2); si no, la razón de abajo
+    const r = l <= GAMMA_A_LOW ? l / (s + l) : (l < 8 ? _gamma(s + l) / _gamma(l) : Math.exp(-algdiv(s, l)));
+    return Math.log(s) + Math.log((1 + _gamma1pm1(s)) * r);
+  }
   const razon = l < 8 ? _gamma(s + l) / _gamma(l) : Math.exp(-algdiv(s, l)); // Γ(s + l)/Γ(l)
   const G = (s * (1 + _gamma1pm1(s))) * razon; // G = [s(1 + H(s))]·Γ(s + l)/Γ(l)
   return Math.log(G);
@@ -230,6 +237,13 @@ function bup(a, b, par, n) {
     if (m === n - 1) break;
     if (m > k && h <= EPS * suma) break;
   }
+  if (a <= GAMMA_A_LOW) {
+    // paquete 10, 10.4: con a ≤ a_low, Σ/a desborda; el 1/a va al logaritmo del prefactor, como en BPSER:
+    // exp(a ln x + b ln y + ln G − ln a)·Σ, combinado por D6b.4 (mín(a, b) < 8, así que es la rama de logaritmos de brcompPor)
+    let hl = dd_add(dd_mul(lnX(par), a), dd_mul(lnY(par), b));
+    hl = dd_add(hl, [lnG(a, b) - Math.log(a), 0]);
+    return combina(hl[0], hl[1], suma);
+  }
   return brcompPor(a, b, par, suma / a);
 }
 
@@ -252,6 +266,18 @@ function bgrat(a, b, par, w0) {
   let J0;
   if (uh >= 1.1) {
     J0 = _cf11(b, uh); // fracción (11) de DM86 con (13) y C3: Q/R exacto
+  } else if (b <= GAMMA_A_LOW) {
+    // paquete 10, 10.3: b ≤ a_low y u < 1.1: J₀ = eᵘ·[(−γ − ln u) − Σ_{n≥1}(−u)ⁿ/(n·n!)] = eᵘE₁(u)
+    const GAMMA_EULER = .577215664901533E+00; // γ = p₀ del bloque del Apéndice C (dm86_apC, l. 883): `.577215664901533E+00`
+    let c = 1; // (−u)ⁿ/n!
+    let serie = 0;
+    for (let n = 1; n <= 10000; n++) { // 3a.4: tope 10 000
+      c = (c * -uh) / n;
+      const t = c / n;
+      serie += t;
+      if (Math.abs(t) <= 2 ** -53 * Math.abs(serie)) break; // 3a.4: corte 2⁻⁵³
+    }
+    J0 = Math.exp(uh) * ((-GAMMA_EULER - Math.log(uh)) - serie);
   } else {
     const [v, esP] = _gratio(b, uh); // árbol de pgamma (Fig. 2 con D6)
     const Q = esP ? 1 - v : v; // 5.3 (B25)

@@ -85,10 +85,10 @@ export function phi1_serie(r) {
   const r2 = r * r;
   let pot = 1;
   let suma = 0;
-  for (let n = 0; n < 200; n++) {
+  for (let n = 0; n < 200; n++) { // paquete 10, 10.6 (marca bajo C7): el tope 200 es de seguridad; con |r| ≤ 0.6 corta en n ≤ 35
     const termino = pot / (2 * n + 3);
     suma += termino;
-    if (termino <= 1.1102230246251565e-16 * suma) break; // 2^-53
+    if (termino <= 2 ** -53 * suma) break;
     pot *= r2;
   }
   return suma;
@@ -105,8 +105,8 @@ export function ln_r(rh, rl) {
 export function ln_dd(v) {
   // 5.2 (l. 1964-1967): con v subnormal, v*2^54 (exacto) y k - 54.
   let k0 = 0;
-  if (v < 2.2250738585072014e-308) { // 2^-1022
-    v = v * 18014398509481984; // 2^54
+  if (v < 2 ** -1022) {
+    v = v * 2 ** 54; // exacto
     k0 = -54;
   }
   // Paso 1: (m, k) con v = m*2^k, m en [1/2, 1), desde los bits del double (DataView).

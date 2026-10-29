@@ -76,7 +76,7 @@ function corcheteR3(x) {
 
 // Diseno firmado de e^(-x²) (expediente l. 237-243): x_hi = trunc(16x)/16 (x_hi² exacto),
 // del = (x − x_hi)(x + x_hi) = x² − x_hi² sin cancelacion; e^(−x²) = e^(−x_hi²)·e^(−del).
-// Devuelve [e1, del] para que el llamador decida (e1 = 0 → el producto es 0).
+// Devuelve e^(−x²) = e1·e^(−del), un solo número; si e1 = 0 devuelve 0 sin calcular del.
 export function _expMenosX2(x) {
   const xh = Math.trunc(16 * x) / 16;
   const e1 = Math.exp(-(xh * xh));
