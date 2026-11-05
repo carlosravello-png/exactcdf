@@ -2,6 +2,7 @@
 
 Exact statistical distribution functions and the special functions behind them, in double precision, for JavaScript (Node and the browser).
 
+[![harness](https://github.com/carlosravello-png/exactcdf/actions/workflows/harness.yml/badge.svg)](https://github.com/carlosravello-png/exactcdf/actions/workflows/harness.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23811083.svg)](https://doi.org/10.5281/zenodo.23811083)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
