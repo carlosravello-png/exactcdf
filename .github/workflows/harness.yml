@@ -7,20 +7,14 @@ on:
 jobs:
   verde:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["18", "20", "22"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
-      - name: Run the harness on every implemented function
-        run: |
-          fail=0
-          for f in erf erfc pnorm lgamma gamma gamma1pm1 pgamma pchisq pbeta; do
-            echo "=== $f ==="
-            out=$(node stats/harness/run.js --funcion "$f") || { echo "FAIL: $f (run error)"; fail=1; continue; }
-            echo "$out"
-            if ! echo "$out" | grep -q "VERDE"; then echo "FAIL: $f (no VERDE)"; fail=1; fi
-            if echo "$out" | grep -q "ROJO"; then echo "FAIL: $f (ROJO)"; fail=1; fi
-          done
-          if [ "$fail" -ne 0 ]; then exit 1; fi
-          echo "All implemented functions VERDE."
+          node-version: ${{ matrix.node-version }}
+      - name: Run the harness on every implemented function and check the public API
+        run: npm test

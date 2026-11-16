@@ -1,0 +1,28 @@
+# Changelog
+
+All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses [Semantic Versioning](https://semver.org/).
+
+## [1.0.0] - 2026-11-16
+
+First packaged release.
+
+### Added
+
+- Eight public functions: `erf`, `erfc`, `pnorm`, `lgamma`, `gamma`, `pgamma`, `pchisq`, `pbeta`. The CDFs take an optional `lowerTail` argument (default `true`).
+- `StatsError` (extends `RangeError`), thrown for out-of-domain or wrong-type input with structured fields (`funcion`, `motivo`, `argumento`, `valor`, `dominio`, `region`). No function returns `NaN`.
+- Frozen test harness with per-region tolerances, run against 31,307 arbitrary-precision reference rows (mpmath, 70 digits) across nine functions (the eight public ones plus the internal helper `gamma1pm1`); all pass.
+- Packaging: root `index.js` exporting the public API, `package.json` (`exactcdf`, ES module, Node.js ≥ 18), `npm test`.
+- Continuous integration running `npm test` on Node.js 18, 20 and 22.
+- `CONTRIBUTING.md`, `CHANGELOG.md`, `.gitattributes`.
+
+### Not included in this release
+
+- Inverse functions `qnorm`, `qgamma`, `qchisq`, `qt`, and the Student t CDF `pt`. Their reference fixtures are in `tests/fixtures/`; there is no implementation yet.
+
+### Known limitations
+
+- Node.js only as shipped: the package reads `stats/harness/reglas.json` through `node:fs`. A browser build is not part of this release.
+- Ulp tolerances for the hardest tail regions (`pgamma_temme`, `pgamma_lejos`, `pbeta_bfrac20`, `pbeta_basym_*`) are provisional (twice the 99th-percentile error of R) and marked as such in `stats/harness/tolerancias.json`.
+- `_gamma1pm1` is internal and not exported from the package entry point.
+
+[1.0.0]: https://github.com/carlosravello-png/exactcdf/releases/tag/v1.0.0

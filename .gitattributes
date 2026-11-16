@@ -1,0 +1,12 @@
+# The code, harness, reports and fixtures under stats/ and tests/ are frozen:
+# their SHA-256 hashes are recorded in the archived deposit (Zenodo).
+# "-text" tells git never to convert line endings in them, so a checkout on
+# any system (Windows with core.autocrlf included) is byte-identical to the
+# committed files and the published hashes keep matching.
+stats/** -text
+tests/** -text
+
+# Reference fixtures are generated data (R + mpmath), not hand-written code:
+# keep them out of the language statistics and collapse them in diffs.
+tests/fixtures/** linguist-generated
+tests/gen/** linguist-detectable=false
