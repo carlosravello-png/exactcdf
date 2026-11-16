@@ -1,5 +1,7 @@
 # exactcdf
 
+Designed and maintained by **Carlos E. Ravello Joo** · ORCID [0009-0007-5631-7436](https://orcid.org/0009-0007-5631-7436)
+
 Statistical distribution functions and the special functions behind them, in double precision, for JavaScript (Node.js).
 
 [![harness](https://github.com/carlosravello-png/exactcdf/actions/workflows/harness.yml/badge.svg)](https://github.com/carlosravello-png/exactcdf/actions/workflows/harness.yml)

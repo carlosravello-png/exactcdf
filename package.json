@@ -1,6 +1,6 @@
 {
   "name": "exactcdf",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Normal, gamma, chi-squared and beta CDFs and the error and gamma functions behind them, in double precision, validated row by row against arbitrary-precision references.",
   "license": "MPL-2.0",
   "author": "Carlos Ravello (https://orcid.org/0009-0007-5631-7436)",

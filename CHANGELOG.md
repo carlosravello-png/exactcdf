@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-11-16
+
+### Changed
+
+- README: author line under the title.
+
 ## [1.0.0] - 2026-11-16
 
 First packaged release.
@@ -25,4 +31,5 @@ First packaged release.
 - Ulp tolerances for the hardest tail regions (`pgamma_temme`, `pgamma_lejos`, `pbeta_bfrac20`, `pbeta_basym_*`) are provisional (twice the 99th-percentile error of R) and marked as such in `stats/harness/tolerancias.json`.
 - `_gamma1pm1` is internal and not exported from the package entry point.
 
+[1.0.1]: https://github.com/carlosravello-png/exactcdf/releases/tag/v1.0.1
 [1.0.0]: https://github.com/carlosravello-png/exactcdf/releases/tag/v1.0.0
