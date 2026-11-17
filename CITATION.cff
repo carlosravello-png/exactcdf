@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "exactcdf"
+abstract: "Normal, gamma, chi-squared and beta cumulative distribution functions and the error and gamma functions behind them, in double precision for JavaScript (Node.js), validated row by row against arbitrary-precision references (mpmath, 70 digits) under per-region tolerances fixed before the code was written."
+authors:
+  - family-names: "Ravello Joo"
+    given-names: "Carlos Eduardo"
+    orcid: "https://orcid.org/0009-0007-5631-7436"
+version: "1.0.2"
+date-released: "2026-11-17"
+license: MPL-2.0
+repository-code: "https://github.com/carlosravello-png/exactcdf"
+url: "https://www.npmjs.com/package/exactcdf"
+keywords:
+  - statistics
+  - cumulative distribution function
+  - incomplete gamma function
+  - incomplete beta function
+  - error function
+  - JavaScript
+references:
+  - type: software
+    title: "stats.js directa y su expediente: funciones estadísticas de alta precisión en JavaScript, con fixtures y auditorías"
+    authors:
+      - family-names: "Ravello Joo"
+        given-names: "Carlos Eduardo"
+        orcid: "https://orcid.org/0009-0007-5631-7436"
+    version: "1.0.0"
+    date-released: "2026-10-30"
+    doi: "10.5281/zenodo.23811083"
+    publisher:
+      name: "Zenodo"

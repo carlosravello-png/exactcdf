@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.2] - 2026-11-17
+
+### Changed
+
+- Author name unified as Carlos Eduardo Ravello Joo (README, `package.json`); citation form Ravello Joo, C. E.
+- README: install with `npm install exactcdf`; software citation points to this version; dossier citation uses the deposit's main title with its English translation.
+- README and CONTRIBUTING: the development and AI-usage statement now matches the Zenodo deposit word for word (who wrote the code, harness and generators; that reference values come from R and mpmath; that audits were separate AI sessions).
+
+### Added
+
+- `CITATION.cff`.
+
 ## [1.0.1] - 2026-11-16
 
 ### Changed
@@ -31,5 +43,6 @@ First packaged release.
 - Ulp tolerances for the hardest tail regions (`pgamma_temme`, `pgamma_lejos`, `pbeta_bfrac20`, `pbeta_basym_*`) are provisional (twice the 99th-percentile error of R) and marked as such in `stats/harness/tolerancias.json`.
 - `_gamma1pm1` is internal and not exported from the package entry point.
 
+[1.0.2]: https://github.com/carlosravello-png/exactcdf/releases/tag/v1.0.2
 [1.0.1]: https://github.com/carlosravello-png/exactcdf/releases/tag/v1.0.1
 [1.0.0]: https://github.com/carlosravello-png/exactcdf/releases/tag/v1.0.0

@@ -1,6 +1,6 @@
 # exactcdf
 
-Designed and maintained by **Carlos E. Ravello Joo** · ORCID [0009-0007-5631-7436](https://orcid.org/0009-0007-5631-7436)
+Designed and maintained by **Carlos Eduardo Ravello Joo** · ORCID [0009-0007-5631-7436](https://orcid.org/0009-0007-5631-7436)
 
 Statistical distribution functions and the special functions behind them, in double precision, for JavaScript (Node.js).
 
@@ -12,7 +12,7 @@ Statistical distribution functions and the special functions behind them, in dou
 ## Installation
 
 ```sh
-npm install github:carlosravello-png/exactcdf
+npm install exactcdf
 ```
 
 Requires Node.js 18 or later. ES module only (`"type": "module"`), no build step.
@@ -107,7 +107,7 @@ The inverse functions (`qnorm`, `qgamma`, `qchisq`, `qt`) and `pt` have referenc
 
 ## Development and provenance
 
-The code was implemented by AI models (Anthropic Claude) from a written specification derived from the primary literature (Cody 1969; DiDonato & Morris 1986, 1992). The author directed the project, made every design and scope decision, arbitrated the numerical ambiguities the texts leave open, and signed off each release after verification against arbitrary-precision references by a frozen, independently audited test harness. Development reports (stats/informes) accompany the code; a full AI-usage disclosure will accompany the associated paper.
+The code in `stats/src`, the test harness (`stats/harness`) and the reference-generation scripts (`tests/gen`) were written by Anthropic AI models (Claude Opus and Sonnet families, via Claude Code and Cowork, October–November 2026) from a written specification derived from the primary literature (Cody 1969; DiDonato & Morris 1986, 1992) and approved by the author. The reference values were not produced by AI: they were computed with R 4.6.1 and mpmath 1.3.0 (70 digits). The author directed the project, made every design and scope decision, arbitrated the numerical ambiguities the texts leave open, and signed off each release. The tolerances were fixed and frozen before the code was written, and each piece was audited in AI sessions other than the one that produced it. Development reports accompany the code in `stats/informes`.
 
 ## Contributing
 
@@ -117,9 +117,9 @@ Bug reports, questions and contributions are welcome — see [CONTRIBUTING.md](C
 
 If you use `exactcdf` in research, please cite the software:
 
-> Ravello Joo, C. E. (2026). *exactcdf* (Version 1.0.0) [Computer software]. https://github.com/carlosravello-png/exactcdf
+> Ravello Joo, C. E. (2026). *exactcdf* (Version 1.0.2) [Computer software]. https://github.com/carlosravello-png/exactcdf
 
-The development dossier (code, fixtures and audits at the close of development) is archived separately: Ravello Joo, C. E. (2026). *Direct stats.js and its dossier: high-precision statistical functions in JavaScript, with fixtures and audits* (Version 1.0.0). Zenodo. https://doi.org/10.5281/zenodo.23811083
+The development dossier (code, fixtures and audits at the close of development) is archived separately: Ravello Joo, C. E. (2026). *stats.js directa y su expediente: funciones estadísticas de alta precisión en JavaScript, con fixtures y auditorías* [Direct stats.js and its dossier: high-precision statistical functions in JavaScript, with fixtures and audits] (Version 1.0.0). Zenodo. https://doi.org/10.5281/zenodo.23811083
 
 ## License
 
@@ -127,4 +127,4 @@ The development dossier (code, fixtures and audits at the close of development) 
 
 ---
 
-Author: **Carlos Ravello** · ORCID [0009-0007-5631-7436](https://orcid.org/0009-0007-5631-7436)
+Author: **Carlos Eduardo Ravello Joo** · ORCID [0009-0007-5631-7436](https://orcid.org/0009-0007-5631-7436)

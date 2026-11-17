@@ -34,7 +34,7 @@ The following are **frozen**:
 - `stats/harness/` — the test harness and its tolerances;
 - `tests/fixtures/` — the reference values.
 
-Their SHA-256 hashes are recorded in the archived deposit, and every published accuracy figure depends on them. Changes there do not go in as ordinary pull requests: they go through the project's dossier process — a written proposal, a development report in `stats/informes/`, an independent audit of the change, and the author's sign-off — and then into a new release. If you have found a numerical problem or want to propose a change to these files, open an issue first and describe it; the maintainer will take it through that process.
+Their SHA-256 hashes are recorded in the archived deposit, and every published accuracy figure depends on them. Changes there do not go in as ordinary pull requests: they go through the project's dossier process — a written proposal, a development report in `stats/informes/`, an audit of the change in a session other than the one that made it, and the author's sign-off — and then into a new release. If you have found a numerical problem or want to propose a change to these files, open an issue first and describe it; the maintainer will take it through that process.
 
 ## License
 
