@@ -6,6 +6,7 @@ Statistical distribution functions and the special functions behind them, in dou
 
 [![harness](https://github.com/carlosravello-png/exactcdf/actions/workflows/harness.yml/badge.svg)](https://github.com/carlosravello-png/exactcdf/actions/workflows/harness.yml)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24474289.svg)](https://doi.org/10.5281/zenodo.24474289)
 
 `exactcdf` computes cumulative distribution functions — the normal, gamma, chi-squared and beta CDFs — and the special functions they rest on (error and gamma functions). Every result is checked row by row against arbitrary-precision references (mpmath, 70 digits) under per-region tolerances fixed before the code was written. The library has **no dependencies** and **never returns `NaN`**: invalid input throws a structured error.
 
@@ -117,7 +118,9 @@ Bug reports, questions and contributions are welcome — see [CONTRIBUTING.md](C
 
 If you use `exactcdf` in research, please cite the software:
 
-> Ravello Joo, C. E. (2026). *exactcdf* (Version 1.0.3) [Computer software]. https://github.com/carlosravello-png/exactcdf
+> Ravello Joo, C. E. (2026). *exactcdf* (Version 1.0.3) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.24474290
+
+To cite all versions, use the concept DOI [10.5281/zenodo.24474289](https://doi.org/10.5281/zenodo.24474289), which always resolves to the latest release. Every GitHub release is archived in Zenodo with its own DOI.
 
 The development dossier (code, fixtures and audits at the close of development) is archived separately: Ravello Joo, C. E. (2026). *stats.js directa y su expediente: funciones estadísticas de alta precisión en JavaScript, con fixtures y auditorías* [Direct stats.js and its dossier: high-precision statistical functions in JavaScript, with fixtures and audits] (Version 1.0.0). Zenodo. https://doi.org/10.5281/zenodo.23811083
 

@@ -7,6 +7,14 @@ authors:
   - family-names: "Ravello Joo"
     given-names: "Carlos Eduardo"
     orcid: "https://orcid.org/0009-0007-5631-7436"
+doi: "10.5281/zenodo.24474289"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.24474289"
+    description: "Concept DOI: all versions of exactcdf"
+  - type: doi
+    value: "10.5281/zenodo.24474290"
+    description: "Version 1.0.3"
 version: "1.0.3"
 date-released: "2026-11-23"
 license: MPL-2.0
