@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.3] - 2026-11-23
+
+### Changed
+
+- `package.json`: `homepage` now points to the project page, https://carlosravello.com/exactcdf-en.html.
+- Software citation (README, `CITATION.cff`) updated to this version. First release archived in Zenodo through the GitHub integration.
+
 ## [1.0.2] - 2026-11-17
 
 ### Changed
@@ -43,6 +50,7 @@ First packaged release.
 - Ulp tolerances for the hardest tail regions (`pgamma_temme`, `pgamma_lejos`, `pbeta_bfrac20`, `pbeta_basym_*`) are provisional (twice the 99th-percentile error of R) and marked as such in `stats/harness/tolerancias.json`.
 - `_gamma1pm1` is internal and not exported from the package entry point.
 
+[1.0.3]: https://github.com/carlosravello-png/exactcdf/releases/tag/v1.0.3
 [1.0.2]: https://github.com/carlosravello-png/exactcdf/releases/tag/v1.0.2
 [1.0.1]: https://github.com/carlosravello-png/exactcdf/releases/tag/v1.0.1
 [1.0.0]: https://github.com/carlosravello-png/exactcdf/releases/tag/v1.0.0

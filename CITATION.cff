@@ -7,8 +7,8 @@ authors:
   - family-names: "Ravello Joo"
     given-names: "Carlos Eduardo"
     orcid: "https://orcid.org/0009-0007-5631-7436"
-version: "1.0.2"
-date-released: "2026-11-17"
+version: "1.0.3"
+date-released: "2026-11-23"
 license: MPL-2.0
 repository-code: "https://github.com/carlosravello-png/exactcdf"
 url: "https://www.npmjs.com/package/exactcdf"

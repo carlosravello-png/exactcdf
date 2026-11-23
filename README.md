@@ -117,7 +117,7 @@ Bug reports, questions and contributions are welcome — see [CONTRIBUTING.md](C
 
 If you use `exactcdf` in research, please cite the software:
 
-> Ravello Joo, C. E. (2026). *exactcdf* (Version 1.0.2) [Computer software]. https://github.com/carlosravello-png/exactcdf
+> Ravello Joo, C. E. (2026). *exactcdf* (Version 1.0.3) [Computer software]. https://github.com/carlosravello-png/exactcdf
 
 The development dossier (code, fixtures and audits at the close of development) is archived separately: Ravello Joo, C. E. (2026). *stats.js directa y su expediente: funciones estadísticas de alta precisión en JavaScript, con fixtures y auditorías* [Direct stats.js and its dossier: high-precision statistical functions in JavaScript, with fixtures and audits] (Version 1.0.0). Zenodo. https://doi.org/10.5281/zenodo.23811083
 
